@@ -10,7 +10,8 @@ templates, and per-discipline "packs" — packaged as a Claude Code plugin but a
 to the portable Agent Skills format (SKILL.md + references) so the core works in other
 agents too. Claude-only features (hooks, subagents, MCP) stay extras, never load-bearing.
 
-Building the plugin is a separate effort. This repo is the design phase.
+The plugin will be built in this repo. It is currently in the design phase; building starts
+once the design map below is complete.
 
 ## Status
 
