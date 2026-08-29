@@ -1,6 +1,6 @@
-# pretext-authoring
+# pretext-authoring-plugin
 
-A public repo (`rickroesler/pretext-authoring`) charting the design of a Claude Code
+A public repo (`rickroesler/pretext-authoring-plugin`) charting the design of a Claude Code
 plugin for authoring textbooks in [PreTeXt](https://pretextbook.org). Started
 2026-08-28 after a [pretext-dev thread with Rob Beezer](https://groups.google.com/g/pretext-dev/c/0D90duVchZg)
 (PreTeXt's maintainer), who is receptive to the idea.
