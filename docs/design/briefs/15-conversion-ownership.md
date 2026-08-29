@@ -51,13 +51,27 @@ what fidelity does a newcomer get? The answer defines `/pretext:convert` — or 
 - **prior-art.md, Pattern 1** — the validate-fix loop with a fix-naming validator is the pattern that
   works in production (anthropics docx/pptx); **Anti-pattern**: the 1★ skill whose correctness "relies
   entirely on the underlying converter not erroring."
+- **pretextbook-org-survey.md §2 (updated after #21)** — confirms and sharpens conversion-landscape's
+  finding: `pretext-tools` (the `oscarlevin.pretext-tools` VS Code extension) already wraps
+  `@pretextbook/import` as an **"import wizard"** — a registered VS Code command (`importProject`)
+  with its own cleanup rules and a preview-before-write UI. But the underlying package **still has
+  no CLI (command-line interface) entry point of its own** — the wizard is editor-only, reachable
+  only from inside VS Code. This is decisive for a terminal/agent context (Codex, a headless Claude
+  Code run): there is nothing to shell out to without the 12-line Node wrapper brief #15 already
+  proposes. ⇒ the plugin's thin shim is not a stopgap until upstream ships a CLI, it is the only way
+  an agent reaches this converter at all; keep owning it.
+- **pretextbook-org-survey.md §7.1, the `community` repo's Day1Notes.md wishlist (updated after
+  #21)** — an on-record, first-party (if informal) community ask for exactly this tool, independent
+  of the `pretext-dev` origin thread already in the map: *"Community control with review... Perhaps
+  AI to go from lite documents to pretext? ... What subset of LaTeX converts to PreTeXt?"* —
+  corroborates that AI-assisted, validate-gated conversion is a named gap, not a speculative bet.
 
 ## 3. Options
 
 | Option | Cost | Benefit |
 |---|---|---|
 | **A. Own nothing — document the routes.** | Leaves the newcomer at exactly the step the Guide already fails them on; forfeits the clearest measured win in the research. | Zero maintenance; no npm dependency. |
-| **B. Thin shim + repair loop (hybrid (c)).** Node wrapper over `@pretextbook/import`, surface `res.warnings`, replace the manifest with `pretext new`'s, then iterate `validate` → `build`, resolving `<TODO>`s and authoring exercise semantics. | A Node/npm dependency and one small script to keep current with a v0.x library; the manifest workaround is a moving target. | 29/232 measured repair cost; the `<TODO>` markers make repair targeted rather than speculative; matches Rob's own ask (schema + validate-iterate). |
+| **B. Thin shim + repair loop (hybrid (c)).** Node wrapper over `@pretextbook/import`, surface `res.warnings`, replace the manifest with `pretext new`'s, then iterate `validate` → `build`, resolving `<TODO>`s and authoring exercise semantics. **(Updated after #21)** confirmed as the *only* agent-reachable route: `pretext-tools`'s own "import wizard" wraps the same package but as a VS Code-only command (`importProject`), with no CLI — there is no upstream CLI to wait for. | A Node/npm dependency and one small script to keep current with a v0.x library; the manifest workaround is a moving target. | 29/232 measured repair cost; the `<TODO>` markers make repair targeted rather than speculative; matches Rob's own ask (schema + validate-iterate) and the `community` repo's on-record AI-conversion wishlist item (org-survey §7.1). |
 | **C. LLM-native conversion (b)** — read the `.tex`, emit PreTeXt directly, gated by validate→build. | Loses the importer's `<TODO>` trail and macro preservation; token cost scales with the book; fidelity unmeasured at book scale ("extremely frustrating" tail). | No toolchain dependency; handles PDF/handwriting/Jupyter/MyST where nothing else exists. |
 | **D. B for LaTeX/Markdown, pandoc for Word, C as the documented fallback, Farmer/UTMOST for whole open-licensed books.** | Most surface to document; three routes to keep honest. | Matches the evidence per-format instead of forcing one mechanism. |
 
@@ -82,6 +96,14 @@ to the converted files. `/pretext:convert` is worth shipping in v0.1 *as a thin 
 and the loop* — the repair pass is the product, and it is the same machinery the core skill already
 needs. Two upstream recommendations fall out and belong in #19: the rejected generated `project.ptx`,
 and `\autoref` in the unknown-macro table.
+
+**(Updated after #21)** The recommendation is unchanged but now stronger, not weaker: org-survey §2
+confirms `pretext-tools`'s own "import wizard" is a thin VS Code-only wrapper around the same
+`@pretextbook/import` package with **no CLI of its own** — so the plugin's shim is not filling a
+temporary upstream gap, it is the only way a terminal/agent context (Codex or a headless Claude Code
+run) reaches this converter at all. And the `community` repo's Day1Notes.md wishlist (org-survey
+§7.1) is on-record, first-party demand for exactly this ("AI to go from lite documents to pretext"),
+independent of the `pretext-dev` origin thread — the ask is corroborated twice over now, not once.
 
 ## 5. Grilling questions (defaults)
 

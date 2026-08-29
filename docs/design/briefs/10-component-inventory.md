@@ -26,7 +26,7 @@ allowed to be load-bearing (map's default: none)?
   caught"** — pipx venv isolation, Windows lxml/cp1252/permissions cluster: "none of these are markup
   mistakes; they're environment mismatches an agent with a 'known Windows issues' checklist … could
   flag proactively."
-- **github-issues-survey.md §2 (table split)** — pretext-cli = install/CLI/deploy/Codespaces friction
+- **github-issues-survey.md §2 (table split)** — pretext-cli = install/CLI (command-line interface)/deploy/Codespaces friction
   (newcomer); pretext core = cross-target rendering (advanced). §3.1: silent asset-generation failure —
   "the build reports success but the expected image/asset is missing" ⇒ post-build artifact check.
 - **review-criteria.md, Summary** — ~50 criteria in three tiers; the mechanical tier is *already
@@ -44,6 +44,43 @@ allowed to be load-bearing (map's default: none)?
   wrapper gave a terminal agent full access to it" ⇒ a thin shim is cheap and high-value.
 - **pretext-dev-survey.md (d)** — `experimental-features.xml` lists the whole dynamic-exercise
   vocabulary as "among the most likely parts of PreTeXt to change"; production markup is low-churn.
+- **pretextbook-org-survey.md §2, "Tooling to integrate with rather than duplicate" (updated after
+  #21)** — `pretext-tools` (the `oscarlevin.pretext-tools` VS Code extension, a 13-package npm
+  monorepo) already ships: schema-driven completion (`@pretextbook/schema`, official RelaxNG
+  compiled to JSON via `salve-annos`, content-model-aware via `walker.possible()` — a **plain npm
+  package with no VS Code dependency**); a standalone formatter with its own CLI
+  (`@pretextbook/format`, `npx pretext-format --write/--check`); a WASM (WebAssembly) live preview
+  (`@pretextbook/pretext-html`, runs the official XSL through libxslt-wasm); and an import wizard
+  wrapping `@pretextbook/import` — which itself still has **no CLI entry point**, only a VS Code
+  command (`importProject`), confirming conversion-landscape.md §6 and brief #15. ⇒ **integrate/
+  shell out** to the formatter's npm CLI rather than build one (defer, v0.2); **still own** the
+  import shim (nothing to shell to) and a portable, Node-free schema query for the terminal/agent
+  context (an editor extension isn't available inside Codex or a headless agent run, so the plugin
+  keeps its own script alongside, not instead of, `@pretextbook/schema`); **never build** a
+  competing live-preview, LSP (Language Server Protocol), or snippet library — defer entirely to
+  `pretext build`/`pretext view` or the extension.
+- **pretextbook-org-survey.md §3, environment-doctor manifest (updated after #21)** —
+  `pretext-docker` pins **Node 22** (NodeSource apt repo) but `pretext-tools`'s live-preview WASM
+  path needs **Node 24+** (`--experimental-wasm-jspi`) — a real doctor-worthy version-mismatch
+  check, not yet in the map. Also concrete, checkable facts to fold into the doctor: TinyTeX + a
+  curated 70+-package `tlmgr` list (asymptote, beamer, pgfplots, physics, siunitx, tikz-cd…); `jing`
+  installed via apt specifically "to use new `pretext validate` command" (hard prerequisite,
+  corroborating feedback-loop-inventory.md §1); a dedicated `/opt/venv` ahead of system Python
+  (matches the map's own `.venv/` convention); `python3-louis` braille wired via a manual `.pth`
+  file; a Playwright/Chromium apt-lib list; a forced `en_US.UTF-8` locale; and self-test recipes for
+  the two most fragile parts of the toolchain — Asymptote's Vulkan check (`asy -version` should
+  list "Vulkan") and a Sage smoke test (`sage -c "print(factor(2024))"` → `2^3 * 11 * 23`).
+- **pretextbook-org-survey.md §5.1, pretext-projects (updated after #21)** — 76 real, catalogued
+  books: `math` 62/76 (82%), then `doc`/`misc`/`expository`/`engr`/`cs`/`writing`/`music` at 1–3
+  each, and **zero** books tagged `subject="physics"` even though the schema's own comment
+  anticipates the category. Physics-pack-second is a bet on an underserved category, not a
+  proven-demand one — the map's "physics second" line should be read that way, not as validated
+  author pull.
+- **pretextbook-org-survey.md §9 (updated after #21)** — `publication.ptx` is validated nowhere in
+  the CLI toolchain, and `pretext-tools`'s LSP ships its own separate, community-maintained
+  schema-validation implementation for exactly that file — evidence the gap is real and closeable,
+  and a candidate to ask Rob/Oscar to extend `pretext validate` to cover, rather than something the
+  plugin should own forever.
 
 ## 3. Options for the v0.1 cut
 
@@ -64,6 +101,13 @@ validator. The evidence says the plugin's differentiated value is (i) the doctor
 schema-shaped knowledge the converters and the Guide leave to the author. Agents, hooks and MCP add
 nothing that a script plus a skill cannot do, cost portability, and cannot travel to Codex — defer to
 v0.2 as optional sugar. LLM reviewers wait until the review-criteria ticket (#16) fixes their rubric.
+**(Updated after #21)** the plugin's role narrows further where `pretext-tools` already covers
+ground: integrate/shell out to its formatter CLI, never build a competing preview/LSP/snippet
+library, and still own only what has no CLI equivalent or no headless-agent equivalent — the import
+shim and the terminal-context schema script. The doctor gains a concrete manifest (Node 22/24
+mismatch, TinyTeX package list, jing-via-apt, braille `.pth`, locale, Asymptote/Sage self-tests) to
+check against instead of ad hoc heuristics. And the physics-pack bet should be named as such — no
+real catalogued book uses it yet.
 
 ## 5. Candidate inventory
 
@@ -75,9 +119,9 @@ Portability: **P**=portable skill content, **CC**=Claude-Code-only.
 | 1 | `pretext` core skill (task-router SKILL.md, <8 KB) | S | both | prior-art Pattern 2 + Codex 8 KB cap | P | **in** |
 | 2 | `references/` (setup, project anatomy, core markup, exercises, build/publish, gotchas, schema, config-placement) | S | both | support-survey categories: markup ~34, exercises ~33, build ~25 | P | **in** |
 | 3 | **Environment doctor / preflight** (`scripts/doctor`) — jing/salve/Java/node/TeX/pdf2svg/pipx-isolation/Windows checks; wraps `pretext support` | T | newcomer | feedback-loop §1 (validate exits 2 out of the box); support-survey Q4, Q7; gh cli#218/#224/#257 | P (script) | **in** |
-| 4 | **validate→build repair loop** (`scripts/check`) — terse parse, filter `check==experimental`, filter by touched file, then `build` for xref/xml:id | T | both | feedback-loop §0, §4.2, §9.11; conversion-landscape §5.3 (`@width` builds-but-validates) | P | **in** |
+| 4 | **`scripts/check` — a thin wrapper around `pretext validate --report-form terse` and `pretext build`, not a validator (updated after #21).** Four named gap-fills, each retirable once upstream/`pretext-tools` absorbs it: (1) run validate, gate on it, then build, then summarise from `./logs/` and the terse report; (2) filter messages to touched files; (3) route around "no jing → exit 2" via `--method server` / `--engine salve` / lxml RelaxNG; (4) validate `publication.ptx` against `publication-schema.rng` (unvalidated anywhere upstream — org-survey §9). | T | both | feedback-loop §0, §4.2, §9.11; conversion-landscape §5.3 (`@width` builds-but-validates); org-survey §9 | P | **in** |
 | 5 | **Config-placement lookup** (project vs publication vs docinfo) reference | S | both | support-survey Recurring Q1 (≥6 features, asked near-verbatim) | P | **in** |
-| 6 | **Schema query** (`scripts/rng-children.py`, 52 lines, 0.03 s, dev-vs-prod diff) | T | advanced | feedback-loop §7 (`statement` has three answers; a table cannot express it) | P | **in** |
+| 6 | **Schema query** (`scripts/rng-children.py`, 52 lines, 0.03 s, dev-vs-prod diff). *Still owned, not shelled out (updated after #21)*: `@pretextbook/schema` does the same job as an npm library with no VS Code dependency, but it needs Node and isn't reachable from a headless/Codex agent run — keep the portable script alongside it, not instead of it. | T | advanced | feedback-loop §7 (`statement` has three answers; a table cannot express it); org-survey §2 | P | **in** |
 | 7 | **Experimental/deprecated-markup warning** reference + check | S+T | advanced | pretext-dev (d) full experimental list; feedback-loop §3.3 `check=experimental` | P | **in** |
 | 8 | Templates (project.ptx, publication.ptx, docinfo, chapter) | TPL | newcomer | prior-art Pattern 4; licensing §3 (own directory, headers intact) | P | **in** |
 | 9 | **Conversion shim** around `@pretextbook/import` + repair loop | T+S | newcomer | conversion-landscape §6 ("no CLI entry point"; 29/232 repair lines) | P | **in** (see #15) |
@@ -88,7 +132,8 @@ Portability: **P**=portable skill content, **CC**=Claude-Code-only.
 | 14 | LLM reviewers (accessibility, consistency, pedagogy) | A | advanced | review-criteria LLM-judgeable tier (A4, A13, C10, P3, P13) | CC (skill-able) | **out** → #16 |
 | 15 | Save/pre-build hook (auto-validate `.ptx`) | H | both | feasible (0.9 s) but noisy: sample-book emits 196 messages, exit 1 (§3.5) | CC | **out** |
 | 16 | Schema MCP server | T | advanced | duplicates #6 at higher cost; feedback-loop §7 says jing's "expected" list beats static query | CC | **out** |
-| 17 | Physics pack (refactor of current skill) | P | both | map: physics second | P | **out** |
+| 17 | Physics pack (refactor of current skill) | P | both | map: physics second — but **zero** of 76 catalogued real books are tagged `subject="physics"` (org-survey §5.1, updated after #21): an underserved-category bet, not proven demand | P | **out** |
+| 20 | Formatter — shell out to `npx pretext-format --write/--check` rather than build one (updated after #21) | T | both | org-survey §2 ("don't build a competing formatter") | P (npx, needs Node) | **out** (v0.2 convenience wrapper) |
 | 18 | Deploy/Runestone troubleshooting reference | S | both | support-survey Q2 (deploy silently succeeds); gh cli#725/#503/#493 | P | **out** (v0.2) |
 | 19 | Rendered-output/visual check (curl + playwright, backslash scan for bad LaTeX) | T | advanced | feedback-loop §8, §9.1 (LaTeX in `<m>` unchecked end-to-end) | P (heavy deps) | **out** (v0.2) |
 
@@ -104,6 +149,9 @@ Portability: **P**=portable skill content, **CC**=Claude-Code-only.
 8. Does v0.1 include conversion at all? *Default: yes, as the thin shim only (see brief #15).*
 9. Post-build artifact verification: in v0.1 or v0.2? *Default: v0.1, minimal (count + non-zero size).*
 10. Any Claude-only feature load-bearing? *Default: none.*
+11. *(New, updated after #21)* Does the doctor check the Node 22 (CLI's Docker image) vs. Node 24+
+    (`pretext-tools` live-preview) mismatch? *Default: yes — flag it, don't fail on it, since the
+    plugin's own core doesn't need Node 24.*
 
 ## 7. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
