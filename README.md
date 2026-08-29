@@ -26,6 +26,20 @@ Expected eventual home: the PreTeXtBook GitHub org, once useful, maintained by R
 team. Licence not yet decided — see `docs/research/licensing.md` (MIT recommended for
 what we author; PreTeXt core is GPL, the Guide is GFDL).
 
+## Method
+
+Development is guided by [Matt Pocock's agent skills](https://github.com/mattpocock/skills), which run
+in Claude Code as slash commands against this repo's GitHub Issues:
+
+- `/wayfinder` — charts the design as a map (issue #1) of decision tickets, worked one at a time
+  (research tickets AFK, grilling/prototype tickets with a human in the loop).
+- `/grilling` and `/domain-modeling` — how each decision ticket is resolved.
+- `/to-spec` → `/to-issues` (or `/to-tickets`) → `/implement` — the path from the finished design
+  to build issues and code, once the map is done.
+- `/triage`, `/code-review` — for incoming issues and PRs when the plugin exists.
+
+`docs/agents/` holds the conventions those skills read (issue-tracker operations, labels).
+
 ## Repo layout
 
 | Path | What |
