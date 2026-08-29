@@ -12,4 +12,4 @@ the plugin itself will be built here once the map is done.
 
 ### Issue tracker
 
-Issues live in this repo's GitHub Issues (`gh` CLI); external PRs are not a triage surface. See `docs/agents/issue-tracker.md`.
+Issues live in this repo's GitHub Issues (`gh` CLI (command-line interface)); external PRs (pull requests) are not a triage surface. See `docs/agents/issue-tracker.md`.
