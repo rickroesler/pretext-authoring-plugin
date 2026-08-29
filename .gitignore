@@ -1,0 +1,11 @@
+# local toolchain — recreate with: python -m venv .venv && pip install "pretext[all]"
+.venv/
+# shallow clone of PreTeXtBook/pretext for grepping; not ours to commit
+vendor-pretext/
+# throwaway verification projects
+scratch/
+# build products
+output/
+generated/
+__pycache__/
+.DS_Store

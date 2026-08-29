@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Multi-target manifest for a physics book: web, print, ebook, kindle.
+     Verified with PreTeXt CLI 2.51.0.
+     Note that epub and kindle BOTH produce a file named main.epub, so the
+     output directories must differ. -->
+<project ptx-version="2">
+  <targets>
+    <target name="web"    format="html"  deploy-dir="."/>
+
+    <target name="print"  format="pdf"   deploy-dir="pdf"
+            latex-engine="xelatex"
+            publication="publication-print.ptx"
+            output-filename="physics.pdf"/>
+
+    <!-- Emits .tex without compiling; useful for inspecting the preamble. -->
+    <target name="tex"    format="latex"/>
+
+    <!-- SVG math: Apple Books, Kobo, Calibre, aggregators (NOT Amazon). -->
+    <target name="ebook"  format="epub"   output-dir="epub"  deploy-dir="epub"
+            publication="publication-ebook.ptx"/>
+
+    <!-- MathML: Amazon KDP only. -->
+    <target name="kindle" format="kindle" output-dir="kindle"
+            publication="publication-ebook.ptx"/>
+
+    <!-- Everything visible, watermarked. Not deployed. -->
+    <target name="instructor" format="pdf" output-dir="instructor"
+            latex-engine="xelatex"
+            publication="publication-instructor.ptx"/>
+  </targets>
+</project>
