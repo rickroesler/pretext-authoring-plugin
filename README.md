@@ -1,13 +1,13 @@
 # PreTeXt for a physics book
 
-`docs/` is a symlink to `~/.claude/skills/pretext/`, the reusable Claude Code skill.
+`skills/pretext/` is the reusable Claude Code skill (symlinked from `~/.claude/skills/pretext`).
 The reference documents are the skill's own reference files, so there is one copy and
 future sessions load them automatically when PreTeXt comes up.
 
-- `docs/SKILL.md` — quick start and the rules that matter
-- `docs/references/` — setup, project anatomy, core markup, **physics markup**,
+- `skills/pretext/SKILL.md` — quick start and the rules that matter
+- `skills/pretext/references/` — setup, project anatomy, core markup, **physics markup**,
   exercises, interactives, build & publish, gotchas, unit vocabulary
-- `docs/templates/` — a validated physics chapter, a multi-target `project.ptx`,
+- `skills/pretext/templates/` — a validated physics chapter, a multi-target `project.ptx`,
   a physics `docinfo.ptx`
 
 ## What's in this directory
@@ -28,3 +28,8 @@ pretext build web && pretext build tex && pretext build ebook && pretext build k
 ```
 
 PDF needs a TeX installation, which this machine does not have.
+
+## Plan
+
+The design of a generic PreTeXt authoring plugin is being charted as a wayfinder map on
+this repo's issues: [Map: a validated design for a PreTeXt authoring plugin](https://github.com/rickroesler/pretext-authoring/issues/1).
