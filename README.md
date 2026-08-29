@@ -45,9 +45,6 @@ in Claude Code as slash commands against this repo's GitHub Issues:
 
 | Path | What |
 |---|---|
-| `skills/pretext/` | The current skill — physics-flavoured (SI units, LaTeX/MathJax math, TikZ/PreFigure diagrams, WeBWorK, PhET/GeoGebra/JSXGraph). Symlinked from `~/.claude/skills/pretext`. Will be refactored into a discipline-agnostic core plus discipline packs (math pack first). |
-| `skills/pretext/references/` | Setup, project anatomy, core markup, physics markup, exercises, interactives, build & publish, gotchas, unit vocabulary, schema. |
-| `skills/pretext/templates/` | A validated physics chapter, a multi-target `project.ptx`, a physics `docinfo.ptx`. |
 | `docs/research/` | 8 evidence documents backing the closed research tickets (support/dev/GitHub surveys, conversion landscape, feedback-loop inventory, prior art, licensing, review criteria). |
 | `docs/design/briefs/` | Decision briefs for the open design tickets. |
 | `docs/design/prototypes/` | Design prototypes, e.g. the newcomer-first-hour storyboard. |
@@ -60,16 +57,4 @@ in Claude Code as slash commands against this repo's GitHub Issues:
 | `.venv/` | PreTeXt CLI 2.51.0 — recreate with `python -m venv .venv && pip install "pretext[all]"`. |
 | `vendor-pretext/` | Shallow clone of `PreTeXtBook/pretext` — XSL, schema, `examples/`, and the Guide's source. Grep this when docs and behaviour disagree. |
 | `scratch/` | Throwaway projects used to verify claims in the docs against a real build. |
-
-## How to use the skill today
-
-Symlink (or copy) `skills/pretext/` into `~/.claude/skills/pretext` and it loads
-automatically whenever a session mentions PreTeXt, `.ptx` files, or `pretext build`:
-
-```bash
-ln -s "$(pwd)/skills/pretext" ~/.claude/skills/pretext
-```
-
-It is verified against PreTeXt CLI 2.51.0 for `pretext validate --engine salve` and
-`pretext build web|tex|ebook|kindle` (PDF needs a TeX installation this repo's
-development machine doesn't have).
+| `reference-skill-draft/` | The earlier physics-flavoured PreTeXt skill (SKILL.md, references, templates). Kept locally as a reference for the design; the plugin's skills will be written fresh from the design. |

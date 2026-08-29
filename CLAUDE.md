@@ -1,11 +1,12 @@
 # pretext-authoring
 
-A Claude Code plugin for authors writing textbooks in PreTeXt. Currently: one skill
-(`skills/pretext/`, symlinked from `~/.claude/skills/pretext`) plus a wayfinder map on
-GitHub Issues charting what a broadly useful authoring plugin should contain.
+A Claude Code plugin for authors writing textbooks in PreTeXt. Currently in the design phase: a wayfinder
+map on GitHub Issues (#1) charting what a broadly useful authoring plugin should contain;
+the plugin itself will be built here once the map is done.
 
-- `skills/pretext/` — the skill: SKILL.md, references/, templates/
-- `.venv/`, `vendor-pretext/`, `scratch/` — local only (gitignored); see README.md
+- `docs/research/`, `docs/design/` — evidence and decision material for the map
+- `.venv/`, `vendor-pretext/`, `scratch/`, `reference-skill-draft/` — local only (gitignored); see README.md.
+  `reference-skill-draft/` is the earlier physics-flavoured skill (symlinked from `~/.claude/skills/pretext`).
 
 ## Agent skills
 

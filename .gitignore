@@ -9,3 +9,6 @@ output/
 generated/
 __pycache__/
 .DS_Store
+
+# local draft of the physics-flavoured skill, kept as a reference (not part of the plugin)
+reference-skill-draft/
