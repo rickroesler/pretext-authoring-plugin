@@ -28,7 +28,7 @@ the pack's file shape, and what does that imply for the later physics-pack refac
   author `align`/`gather`/`equation` inside `<m>`/`<md>`.
 - **review-criteria.md A10** — commutative diagrams should use `amscd` inside `<md>` (MathJax renders
   it accessibly) rather than a drawing tool. A5: tabular long-descriptions for graphs.
-- **github-issues-survey.md, WeBWorK + Images sections** — WW generation is "the most failure-prone
+- **github-issues-survey.md, WeBWorK + Images sections** — WW (WeBWorK) generation is "the most failure-prone
   asset type" (cli#662); `.pg` filename collisions and chunking bugs are **open** (pretext#2699/#2700);
   `format="custom"` cannot drive WW generation (cli#419). Images: remote Asymptote server can silently
   return bad output, open since 2022 (pretext#1869); PreFigure has live edge-case bugs
@@ -51,12 +51,12 @@ the pack's file shape, and what does that imply for the later physics-pack refac
 ## 3. What the evidence says is core vs. pack
 
 **Core (discipline-agnostic):** `<m>`/`<md>`/`<mrow>` mechanics and the `p`-bottleneck; macros in
-`docinfo/macros` (every STEM book has them, and C2's digit rule is universal); `theorem`/`definition`/
-`example`/`proof` (they are PreTeXt block elements, not math elements — a CS or physics book uses them
+`docinfo/macros` (every STEM (science, technology, engineering and mathematics) book has them, and C2's digit rule is universal); `theorem`/`definition`/
+`example`/`proof` (they are PreTeXt block elements, not math elements — a CS (computer science) or physics book uses them
 identically); `exercise`/`task`/`hint`/`answer`/`solution`; numbering and `<solutions>`; images and
 the PreFigure/TikZ/Asymptote *pipeline* (top pain category for everyone); accessibility.
 
-**Math pack:** WeBWorK authoring (`<webwork>`, PG, `var`, `@pg-name`, server config, `.pg` collisions,
+**Math pack:** WeBWorK authoring (`<webwork>`, PG (Problem Generation, WeBWorK's problem language), `var`, `@pg-name`, server config, `.pg` collisions,
 seed debugging) — justified by the separate `StatementExerciseWW` grammar; Sage cells and `sageplot`;
 `amscd` commutative diagrams; math-notation conventions and worked macro sets; math-flavoured exercise
 idioms and the numbering conventions math faculty expect.
@@ -99,11 +99,11 @@ a copy rather than a redesign.
 5. Are theorem/proof/definition core? *Default: elements core; discipline *conventions* (numbering style, `amscd`) in the pack.*
 6. Does the pack carry templates? *Default: yes, one worked math chapter; templates are the highest-value pack artifact per prior-art Pattern 4.*
 7. How does the core skill point at packs without listing them all in its router? *Default: one router row — "discipline-specific markup → load the matching `pretext-<discipline>` skill if installed".*
-8. Do packs get their own version pin? *Default: yes, same CLI-version metadata as core.*
+8. Do packs get their own version pin? *Default: yes, same CLI (command-line interface)-version metadata as core.*
 9. Sage: pack or out of scope? *Default: pack, thin — the support evidence is mostly install pain, which the doctor already covers.*
 10. Runestone/CS: a third pack or core? *Default: neither in v0.1; the experimental-markup warning in core covers the risk.*
 
-## 7. Hard-to-reverse → ADR candidates
+## 7. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
 - **ADR: the pack contract and the core/pack boundary** (what a pack may and may not contain; skill naming). Renaming skills breaks invocations, and re-cutting the boundary means moving reference files that other components cite.
 - **ADR: WeBWorK lives in the math pack, not core** — determines whether the core skill can be trusted alone by a WeBWorK author, and is visible to users.

@@ -7,7 +7,7 @@ CLI session (`pretext` 2.51.0 in `.venv/`) and a build of `scratch/demo-book`.
 
 ## 1. What the two trackers look like
 
-| | pretext (core: schema, XSL, `pretext/pretext` script) | pretext-cli (Python CLI wrapper) |
+| | pretext (core: schema, XSL (Extensible Stylesheet Language), `pretext/pretext` script) | pretext-cli (Python CLI wrapper) |
 |---|---|---|
 | Open issues (label-distribution pull) | 359 | 33 |
 | Sample pulled (all-state, newest 300) | 134 open / 166 closed | 31 open / 269 closed |
@@ -42,7 +42,7 @@ match more than one category):
 | import/conversion | 16 | 7 |
 
 Reading the split: **pretext** (core) issues are dominated by *rendering correctness* across
-targets — a construct works in HTML but not PDF/EPUB/slides, or a WeBWorK/Runestone
+targets — a construct works in HTML but not PDF/EPUB (Electronic Publication)/slides, or a WeBWorK/Runestone
 interactive misbehaves in one output format. **pretext-cli** issues are dominated by *toolchain
 friction* — install, CLI ergonomics, deploy, and Codespaces/devcontainer setup. This maps cleanly
 onto the map's two tracks: newcomer pain is concentrated in pretext-cli's install/CLI/deploy/
@@ -58,8 +58,8 @@ do about it, not what upstream should do.
 | # | Title | State | Gist | Plugin implication |
 |---|---|---|---|---|
 | cli#224 | Improve python version management | closed | Many pretext-support threads traced back to the *Python* install, not pretext itself | A setup/doctor skill should check Python/venv health before touching pretext-specific things |
-| cli#218 | A better error message for pdf2svg issue [windows] | closed | Missing `pdf2svg` produced a cryptic image-build failure on Windows | Doctor check: verify per-target external executables (`pdf2svg`, `pdftoppm`, Ghostscript, `jing`, node) exist before build, with install hints per OS |
-| cli#257 | Document ubuntu/wsl setup steps | closed | WSL users hit "neither Ghostscript nor pdftoppm" with no guidance | Same as above — WSL is common enough to get its own doctor branch |
+| cli#218 | A better error message for pdf2svg issue [windows] | closed | Missing `pdf2svg` produced a cryptic image-build failure on Windows | Doctor check: verify per-target external executables (`pdf2svg`, `pdftoppm`, Ghostscript, `jing`, node) exist before build, with install hints per OS (operating system) |
+| cli#257 | Document ubuntu/wsl setup steps | closed | WSL (Windows Subsystem for Linux) users hit "neither Ghostscript nor pdftoppm" with no guidance | Same as above — WSL is common enough to get its own doctor branch |
 | cli#488 / #676 | Codespace should respect/install via `requirements.txt` | closed | Codespace template drifted from the pinned CLI version, breaking builds after a rebuild | Plugin should always check `requirements.txt` pinning vs. installed `pretext --version` before acting |
 | cli#3161 (pretext) | Asymptote `-offscreen` misparsed by older Asymptote, silently no image | closed 2026-08-20 | A supported-looking flag silently produced *no error and no image* — the worst failure mode | Doctor/build-failure skill must specifically check for "expected asset file, got nothing" as its own class, not just non-zero exit |
 | cli#1055 | Remove `pretextbook`/`pretext-cli` from PyPI? | open | Old package name `pretextbook` still installable and gives a stale version | Skill should warn if `pip show pretextbook` (not `pretext`) is what's installed |
@@ -75,7 +75,7 @@ do about it, not what upstream should do.
 | cli#254 | `pretext generate ...`: what goes in the blank? | closed | Users didn't know `generate` takes an *asset type* (`webwork`, `latex-image`, ...), not a target | Command surface changed since (now `generate [asset-types]... -t target`); skill should give the current signature verbatim rather than guessing from old docs |
 | cli#780 | `at_exit` `sys.exit` conflict producing a stack trace on success paths | closed | Internal cleanup-handler bug leaked a traceback even on a fine exit | Reinforces: don't treat "a traceback appeared" as necessarily fatal — check exit code too |
 | cli#1117 | Failed asset generation not being detected | closed 2026-05-29 (recent) | A core error-message change broke the CLI's own detection of failed asset builds (Asymptote, WeBWorK) — assets silently didn't get flagged as failed | **Known-unfixed-adjacent**: asset-generation failure detection is fragile and has regressed at least once; plugin should independently check that expected output files exist after `generate`/`build`, not just trust the exit code |
-| cli#414 | `/tmp` directories not cleaned up after successful build | closed | 38 GB of `/tmp` accumulated on a staging machine | `--save-tmp-dirs` exists for debugging; plugin should never pass it by default and should be aware temp dirs are created per build |
+| cli#414 | `/tmp` directories not cleaned up after successful build | closed | 38 GB (gigabytes) of `/tmp` accumulated on a staging machine | `--save-tmp-dirs` exists for debugging; plugin should never pass it by default and should be aware temp dirs are created per build |
 
 ### Build / validate
 
@@ -85,7 +85,7 @@ do about it, not what upstream should do.
 | cli#1189 | "Heads-up: local validation rework in core pretext.py" | open 2026-07-10 | Maintainer-to-maintainer coordination note: core's validation internals were reworked (#3004, refined by #3027, #3033), CLI needs to track it | **Roadmap signal**: validation internals are actively being refactored as of mid-2026; a plugin that shells out to `pretext validate` is insulated from this churn (good), one that parses `pretext.py` internals directly would not be |
 | pretext#3076 / #3075 | "Validation-plus" carrying forward old Schematron rules (xml:id/@label advice, WeBWorK+LaTeX `@` clash) | open | Schematron was retired (#2991); its context-dependent checks are being reimplemented in `pretext-validation-plus.xsl`, one at a time, and not all are done yet | Some "soft" author mistakes (missing `xml:id`, WeBWorK statements with raw `@` in LaTeX macros) are **known gaps** validation doesn't yet catch — worth a plugin-side lint pass until upstream lands them |
 | cli#806 / #691 / #812 | If PDF build fails, dump `.tex`; better `tikz` error messages; log PDF failures | open | LaTeX/tikz compile failures currently point at *generated* file paths, not the author's source, and sometimes aren't logged as failures at all | **Known-unfixed**: PDF/LaTeX build failures are the weakest link in error attribution; plugin should map generated `.tex` line numbers back to source only with real substitution logic, and treat a "green" `pretext build` with a suspiciously small/absent PDF as suspect |
-| cli#664 | Verbosity of log messages for XSLT-produced errors | closed but recurring pattern | XSLT `xsl:message` output is verbose and hard to read for authors | Plugin's build-log summarizer should filter/re-rank XSLT log noise rather than dumping the full log at an author |
+| cli#664 | Verbosity of log messages for XSLT (Extensible Stylesheet Language Transformations)-produced errors | closed but recurring pattern | XSLT `xsl:message` output is verbose and hard to read for authors | Plugin's build-log summarizer should filter/re-rank XSLT log noise rather than dumping the full log at an author |
 
 ### Deploy
 
@@ -95,14 +95,14 @@ do about it, not what upstream should do.
 | cli#503 | `git deploy` breaks silently after a custom domain is set | closed | GitHub silently recreates a `CNAME` file that blocks pushes, no warning given | **Known-unfixed-flavoured**: silent breakage after a working custom-domain deploy is a recurring shape of bug across this repo's deploy issues; plugin should proactively check for `CNAME` drift before/after `pretext deploy` |
 | cli#725 / #644 | "Make two deploy methods cohesive" / GitHub Action for `pretext deploy` | closed | Two divergent deploy paths existed: `pretext deploy` (pushes to `gh-pages` branch) vs. a GitHub Actions-based workflow (needs Pages set to "GitHub Actions" source) — easy to misconfigure by mixing them | Plugin must detect *which* deploy method a repo is using (branch vs. Action) before recommending a fix, and never suggest commands for the other method |
 | cli#493 | `git deploy` hangs when password is wrong | open | Deploy can hang indefinitely waiting on a credential prompt rather than failing | Plugin driving `pretext deploy` non-interactively should set a timeout and treat a hang as a credential problem, not a build problem |
-| cli#897 | Improve directions for setting up gh authentication | open | Users default to setting up personal access tokens that aren't actually required | Skill should give the *current*, minimal auth story (SSH or gh-cli credential helper), not the historically-recommended PAT flow |
+| cli#897 | Improve directions for setting up gh authentication | open | Users default to setting up personal access tokens that aren't actually required | Skill should give the *current*, minimal auth story (SSH (Secure Shell) or gh-cli credential helper), not the historically-recommended PAT (personal access token) flow |
 | cli#837 | Deployment to local directory | open (13 comments) | No first-class "deploy to a folder / non-GitHub host" path; users want to self-host | **Roadmap-ish gap**: still no CLI support for non-GitHub-Pages deploy targets (Netlify/Cloudflare Pages are also open requests, cli#739) — plugin should treat "deploy" as GitHub Pages-only capability today |
 
 ### Images / assets (Asymptote, PreFigure, LaTeX images)
 
 | # | Title | State | Gist | Plugin implication |
 |---|---|---|---|---|
-| pretext#2412 | 100% width latex-images in "naked" images not 100% width in PDF | closed | Subtle PDF-only sizing bug | Cross-target visual QA is genuinely hard to automate; flag as an area authors should manually check PDF proofs, not assume WYSIWYG parity with HTML |
+| pretext#2412 | 100% width latex-images in "naked" images not 100% width in PDF | closed | Subtle PDF-only sizing bug | Cross-target visual QA (quality assurance) is genuinely hard to automate; flag as an area authors should manually check PDF proofs, not assume WYSIWYG (What You See Is What You Get) parity with HTML |
 | pretext#2140 | Recompile latex images as needed (multi-pass) | closed | Some TikZ/LaTeX images need multiple compiler passes (à la `latexmk`) that PreTeXt didn't automatically do | If a plugin drives repeated builds, be aware first-pass image builds can legitimately look different from second-pass |
 | cli#690 | Difficult to find image `.tex` files in case of error | closed | CLI's reported failing filename didn't match the actual generated `.tex` path | Even where "fixed," this class of path-mismatch bug has recurred (see `--latex` / `-l` flag added to `build` to dump LaTeX source for inspection) — plugin should always pass `-l`/`--latex` when diagnosing a PDF build problem |
 | pretext#1869 | Check for bad results from the (remote) Asymptote server | open since 2022 | The *shared* Asymptote server used by `asy-method=server` can silently return bad output and PreTeXt doesn't notice | **Known-unfixed**: default/remote Asymptote rendering is not verified; recommend local Asymptote (`asy-method="local"`) for anything beyond trivial diagrams, consistent with cli#805's "consider making local the default" |
@@ -112,7 +112,7 @@ do about it, not what upstream should do.
 
 | # | Title | State | Gist | Plugin implication |
 |---|---|---|---|---|
-| cli#662 | Improve WeBWorK generation: don't abort on a single problem failure | closed | One broken WW problem used to fail the whole `generate` run | Fixed, but confirms: WW generation is the most failure-prone asset type; always check `logs/` for individual-problem failures even on an overall success |
+| cli#662 | Improve WeBWorK generation: don't abort on a single problem failure | closed | One broken WW (WeBWorK) problem used to fail the whole `generate` run | Fixed, but confirms: WW generation is the most failure-prone asset type; always check `logs/` for individual-problem failures even on an overall success |
 | pretext#2699 / #2700 | Generated `.pg` filenames collide (`1.pg` twice); chunking level not always applied | open | Real, currently-live bugs in the WeBWorK asset pipeline | **Known-unfixed**: flag WeBWorK authors to check generated filenames for collisions after adding a second WW question to the same section |
 | pretext#3008 | HTML+WeBWorK: `hN` heading template reached without `$heading-level` | closed 2026-07-08 (very recent) | A shortened Preview Activity (with `task`s removed) broke WW's heading-level assumption | WeBWorK activities are structurally sensitive to `task` nesting; don't casually restructure WW-bearing activities |
 | pretext-cli#419 | Custom format doesn't support WebWorK problem-set generation | closed | `format="custom"` in the manifest can't drive WW generation | Plugin should warn if an author with WeBWorK content tries a custom-format target |
@@ -124,7 +124,7 @@ do about it, not what upstream should do.
 | pretext#2458 | FITB (fill-in-the-blank): unspecified `@mode` silently produces a broken exercise | closed 2025-06-18 | Missing an attribute produces a *silently* broken JSON blob that fails to load in Runestone, with no build error | **Known-unfixed shape** (validation-plus is only slowly catching these, see #3075/#3076 above): FITB and similar Runestone-only constructs can pass `pretext validate` and `pretext build` cleanly yet fail at runtime on Runestone. Plugin should maintain its own checklist of Runestone-fragile constructs (`fillin` mode, `activity`+`introduction` placement, timed exams) beyond what `validate` catches |
 | pretext#2635 / #2294 | Activity introductions / FITB elements not retained inside `activity` | open | `activity` (Runestone-specific wrapper) has multiple open placement/rendering bugs | Treat `activity` as one of the least mature elements; recommend testing on a real Runestone deploy, not just local HTML build |
 | pretext#2586 / #2683 | Timed-exam exercises repeatedly go missing from `runestone-manifest.xml` | open / closed-then-recurred | The *same* bug (timed exams absent from the manifest) has recurred more than once | Confirmed recurring regression — good candidate for a "known gotchas" warning list entry with a recheck-after-upgrade note |
-| cli#513 / #432 | "Make deploying to Runestone easy" / Combined CI/CD of PreTeXt+Runestone | closed (PROSE-labeled, i.e. contributor-project) | Runestone deployment is a separate, still partially-manual workflow from GitHub Pages deploy | Plugin's "deploy" skill needs a distinct Runestone path (different from `pretext deploy`), likely documentation-and-checklist rather than a driven command |
+| cli#513 / #432 | "Make deploying to Runestone easy" / Combined CI (continuous integration)/CD (continuous deployment) of PreTeXt+Runestone | closed (PROSE-labeled, i.e. contributor-project) | Runestone deployment is a separate, still partially-manual workflow from GitHub Pages deploy | Plugin's "deploy" skill needs a distinct Runestone path (different from `pretext deploy`), likely documentation-and-checklist rather than a driven command |
 
 ### Docs gaps
 
@@ -235,7 +235,7 @@ Global flags on the bare `pretext` invocation: `-v/--verbosity {debug|info|warni
 - `pretext -t` (bare, no subcommand) printed the two configured target names (`web`, `print`) and
   exited — a cheap way for an agent to enumerate targets without parsing `project.ptx` XML itself.
 - `pretext build web` succeeded end-to-end including a live network fetch of Runestone Services
-  from `runestone.academy`'s CDN (even for a plain `book` template with no explicit Runestone
+  from `runestone.academy`'s CDN (Content Delivery Network) (even for a plain `book` template with no explicit Runestone
   content) — **builds are not fully offline** by default.
 - `pretext validate web` (default `--method local`) failed with exit 2 in this environment because
   `jing` is not on PATH, even though `java` is present — jing is a separate binary dependency the

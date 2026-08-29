@@ -2,7 +2,7 @@
 
 Research ticket [#7](https://github.com/rickroesler/pretext-authoring-plugin/issues/7) (wayfinder map
 [#1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)).
-Snapshot date: 2026-08-28. PreTeXt CLI 2.51.0 in `.venv/`, core at `~/.ptx/2.51.0/core/`,
+Snapshot date: 2026-08-28. PreTeXt CLI (command-line interface) 2.51.0 in `.venv/`, core at `~/.ptx/2.51.0/core/`,
 `vendor-pretext/` at the same vintage.
 
 Everything below was run. The transcripts are from `scratch/loop-trial/` (gitignored): a copy of
@@ -15,7 +15,7 @@ Everything below was run. The transcripts are from `scratch/loop-trial/` (gitign
 
 **PreTeXt 2.51.0 gives an agent a genuinely good validation signal and a genuinely bad build
 signal.** `pretext validate` is machine-shaped by design — a `--report-form terse` mode emits
-one tab-separated message per line carrying *file, XPath, line, check-name, message*, and its
+one tab-separated message per line carrying *file, XPath (XML Path Language), line, check-name, message*, and its
 exit code means what it says. `pretext build` is the opposite: it exits **0** on source that
 does not validate, silently dropping or passing through the offending markup, and its only
 hard failures are XML well-formedness, unresolved `xref`, duplicate `xml:id`, and a missing
@@ -47,7 +47,7 @@ Two traps found while measuring, both worth reporting upstream:
 | Java | OpenJDK 21.0.12 | present |
 | `jing` | **not installed** | so `pretext validate` exits **2** out of the box |
 | salve (`--engine salve`) | installed at `~/.ptx/2.51.0/salve/` | node 24.16.0 + npm 11.13.0 present; self-installs on first use |
-| `xsltproc` | not installed | not needed — `lxml` runs the XSLT 1.0 stylesheet (§6) |
+| `xsltproc` | not installed | not needed — `lxml` runs the XSLT (Extensible Stylesheet Language Transformations) 1.0 stylesheet (§6) |
 | `lxml` | 6.1.2 | in the venv |
 | `playwright` | 1.62.0 + chromium in `~/.cache/ms-playwright` | works headless (§8) |
 | TeX / `xelatex` | absent | `pretext build print` fails; no PDF signals at all |
@@ -92,8 +92,8 @@ the `sample-book` (10 320 lines) figure after the slash where measured.
 | 7 | **`publication.ptx` schema** | **not wired into the CLI** — run `jing schema/publication-schema.rng publication/publication.ptx` by hand | typo'd publication attributes and elements | nothing runs it; and the shipped schema requires `epub/cover`, which the CLI's own generated publication file omits → one false positive | 0.3 s |
 | 8 | **Schema query** (`what may go inside X?`) | 52-line `lxml` script over `pretext.rng` (§7) | allowed children + attributes of an element, per context, offline, in 30 ms; dev-vs-production diff shows what is experimental | flat sets, not sequence/cardinality; no prose | 0.03 s |
 | 9 | **jing's "expected" list** | a by-product of #1 | jing names *every element allowed at that point* in the error text — the single richest repair hint in the toolchain | salve truncates the same list to 12 names + "… (58 more)" | free |
-| 10 | **Rendered HTML, fetched** | `pretext view web --no-launch` then `curl http://localhost:<port>/output/web/<page>.html` | page exists, HTTP status, title, script/img/iframe counts, structure via `lxml` | anything MathJax/knowl JavaScript produces — the served HTML is pre-JavaScript | 1–4 ms per page after a ~3 s server start |
-| 11 | **Headless browser** | `playwright` chromium (in the venv, browsers installed) | final DOM: `mjx-container` counts, `mjx-merror`, console/page errors, full-page screenshot | does not *fail* on bad LaTeX — MathJax degrades silently (§8) | 5.2 s including browser launch |
+| 10 | **Rendered HTML, fetched** | `pretext view web --no-launch` then `curl http://localhost:<port>/output/web/<page>.html` | page exists, HTTP (Hypertext Transfer Protocol) status, title, script/img/iframe counts, structure via `lxml` | anything MathJax/knowl JavaScript produces — the served HTML is pre-JavaScript | 1–4 ms per page after a ~3 s server start |
+| 11 | **Headless browser** | `playwright` chromium (in the venv, browsers installed) | final DOM (Document Object Model): `mjx-container` counts, `mjx-merror`, console/page errors, full-page screenshot | does not *fail* on bad LaTeX — MathJax degrades silently (§8) | 5.2 s including browser launch |
 | 12 | **PDF signals** | `pretext build print` | — | no TeX installed: `PTX:ERROR: cannot locate executable ... xelatex`, exit 1. Page counts, overfull boxes, float placement: **unavailable here** | n/a |
 | 13 | **Link / `xref` checking** | none | — | dead external `<url href>`: nothing checks it. `xref` to a missing target *is* caught, but by the **build**, not by validate | n/a |
 
@@ -191,7 +191,7 @@ to a schema query for the full list.
 
 Timings (three runs each, demo book / sample-book): jing 0.93, 1.00, 0.98 s / 1.82 s;
 salve 0.77, 0.62, 0.86 s / 1.92 s; `--method server` 16.1 s. salve is slightly *faster* than jing
-locally (no JVM start) and both are fast enough for a save hook even on a real book.
+locally (no JVM (Java Virtual Machine) start) and both are fast enough for a save hook even on a real book.
 
 `--method server` needs no local install but takes 16 s and posts the assembled source to a remote
 service — a privacy consideration worth a line in the plugin docs.
@@ -219,14 +219,14 @@ touched*, or it will chase 195 pre-existing messages in a real manuscript.
 
 ### 4.1 Where messages land
 
-* **stdout** carries a level-tagged, ANSI-coloured stream (`warning:`, `error:`, `fatal:`), and
+* **stdout** carries a level-tagged, ANSI (American National Standards Institute)-coloured stream (`warning:`, `error:`, `fatal:`), and
   repeats every error in a summary block at the end, which is the easiest thing to parse.
 * **`logs/<timestamp>.log`** — one uncoloured file per run, `LEVEL   : message`. Note the errors
   are re-emitted into the log at `INFO` level inside the summary block, so grepping the log for
   `ERROR` is not sufficient; grep for `PTX:ERROR`.
 * **`logs/schema-errors.log`** + **`logs/schema-assembled-source.xml`** — written only when jing
   is on `$PATH`, holding raw jing output against the *production* schema.
-* XSL messages are surfaced inline, prefixed with `*`, e.g. `* PTX:DEPRECATE: …`.
+* XSL (Extensible Stylesheet Language) messages are surfaced inline, prefixed with `*`, e.g. `* PTX:DEPRECATE: …`.
 
 ### 4.2 Exit codes
 
@@ -587,7 +587,7 @@ Ordered by how much damage they do. This list feeds the upstream-recommendations
 
 1. **LaTeX inside `<m>`/`<me>`/`<md>` is unchecked, end to end.** Validate passes, build passes,
    HTML renders, no console error. Every math error reaches the reader. This is the single largest
-   hole for an agent writing a STEM textbook, where most of the authored characters are LaTeX. A
+   hole for an agent writing a STEM (science, technology, engineering and mathematics) textbook, where most of the authored characters are LaTeX. A
    check is feasible: MathJax and KaTeX both expose a parse-only API, and `\newcommand` macros from
    `docinfo/macros` are available to the checker.
 2. **`build` exits 0 on schema-invalid source, and ships the garbage.** An invented element's text

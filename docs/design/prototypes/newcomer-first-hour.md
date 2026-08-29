@@ -21,7 +21,7 @@ Every agent utterance is grounded in the research base; citations are bracketed 
 for a human decision. `[AGENT VALIDATES]` = runs a machine check and interprets its exit code.
 `[BREAKS]` = the scripted failure and the agent's exact words.
 
-**Baseline machine** (the one everything below was measured on): PreTeXt CLI 2.51.0 in a venv,
+**Baseline machine** (the one everything below was measured on): PreTeXt CLI (command-line interface) 2.51.0 in a venv,
 OpenJDK 21, node 24, `lxml`, `playwright`+chromium — but **no `jing` and no TeX**
 [feedback-loop §1]. That is deliberately the awkward-but-common case.
 
@@ -103,7 +103,7 @@ OpenJDK 21, node 24, `lxml`, `playwright`+chromium — but **no `jing` and no Te
 68        - 14 `image-description-missing` — accessibility, and I'll treat them as TODOs, not
 69          defects, until you tell me what the figures show [review-criteria A1, A4].
 70        Note the line numbers are lines of the *assembled* book, never of your files; the `file`
-71        column is real, the `path` column is an XPath [feedback-loop §3.2]."
+71        column is real, the `path` column is an XPath (XML Path Language) [feedback-loop §3.2]."
 72
 73  [AGENT ACTS] Repairs, then re-validates after each batch. Four rounds, ~29 changed lines out
 74        of 232 — the measured cost on the trial manuscript [conversion §4.2, §5].
@@ -182,7 +182,7 @@ OpenJDK 21, node 24, `lxml`, `playwright`+chromium — but **no `jing` and no Te
 16          or `\begin{` *anywhere* is detected as LaTeX [conversion §2.3]. I'll grep your .md
 17          files for those first and pass the format explicitly if I find any.
 18        - Word carries no theorem or exercise semantics to carry across. Everything arrives as
-19          headings and paragraphs. Beezer's own RTF test — the closest real data point — came
+19          headings and paragraphs. Beezer's own RTF (Rich Text Format) test — the closest real data point — came
 20          out schema-valid but with chapter titles nested wrongly inside `<introduction>`, body
 21          text spuriously wrapped in `<term>`, code emitted line-by-line instead of as one
 22          block, and figures arriving empty [conversion §2.4, §2.6]."
@@ -274,7 +274,7 @@ OpenJDK 21, node 24, `lxml`, `playwright`+chromium — but **no `jing` and no Te
 15           `docinfo/document-id` and `edition` *now* and never change them — the `label`
 16           values derived from them key student database records, and changing one orphans
 17           student progress [review-criteria P14, C9]."
-18        3. "What licence? It determines whether the Farmer/UTMOST conversion service and much
+18        3. "What licence? It determines whether the Farmer/UTMOST (Undergraduate Teaching in Mathematics with Open Software and Textbooks) conversion service and much
 19           of the community tooling is open to you, and it is the one thing that's awkward to
 20           change after publication [licensing §1]."
 21        4. "An `xml:id` naming convention — `sec-topic` or `topic-sec`? I'll apply it
@@ -357,24 +357,24 @@ Each stall is a point where *a skill alone — prose the model reads — cannot 
 either because the work is deterministic and repetitive (wants a script/tool), or because it
 must happen at a moment the model doesn't control (wants a hook/command), or because it needs
 judgement over content (wants an agent). Portability caveat throughout: per the map and
-[prior-art, Portability], commands/agents/hooks/MCP are Claude-only and must never be
+[prior-art, Portability], commands/agents/hooks/MCP (Model Context Protocol) are Claude-only and must never be
 load-bearing — every stall below needs a skill-level fallback path.
 
 | # | Stall | Why a skill alone is insufficient | Component implied |
 |---|---|---|---|
-| 1 | **First-run `pretext validate` fails (exit 2, no jing)** and the fix is a multi-step install with a hand-written shim [feedback-loop §1] | Deterministic, OS-branching, and must run *before* anything else; prose instructions will be re-derived every session | **Command** `/pretext:doctor` + a script (Python/venv, CLI version, `pretextbook` vs `pretext`, java/jing/node/TeX/pdf2svg, pipx isolation [support], Windows lxml/cp1252 branch [support §Windows]) |
+| 1 | **First-run `pretext validate` fails (exit 2, no jing)** and the fix is a multi-step install with a hand-written shim [feedback-loop §1] | Deterministic, OS (operating system)-branching, and must run *before* anything else; prose instructions will be re-derived every session | **Command** `/pretext:doctor` + a script (Python/venv, CLI version, `pretextbook` vs `pretext`, java/jing/node/TeX/pdf2svg, pipx isolation [support], Windows lxml/cp1252 branch [support §Windows]) |
 | 2 | **A broken jing reports a clean bill of health** [feedback-loop §6.1] | A silent false-negative that invalidates the whole loop; needs a probe run once per session, not advice | **Script**, invoked by the doctor and by any validate wrapper |
 | 3 | **`@pretextbook/import` has no CLI** [conversion §2.3, §4] | The plugin must *ship* the shim; a skill can only describe it | **Tool/script** (Node shim, surfacing `res.warnings` as a review list) |
 | 4 | **The importer's `project.ptx` is rejected by CLI 2.51.0** [conversion §4.1 #9] | Mechanical fixup on every single import | **Script** (+ an upstream bug report) |
 | 5 | **Validate output needs post-processing**: whole-book scope, `experimental` noise, file+XPath but never file+line in the author's own file [feedback-loop §3.2, §3.5, §9.6, §9.11] | Parsing tab-separated reports, filtering by changed files, mapping XPath→cursor position — repetitive and exact | **Tool** (validate wrapper: run, parse, filter by `file`/`check`, resolve to source line) |
-| 6 | **LaTeX inside `<m>`/`<md>` is unchecked end to end** [feedback-loop §9.1] | The largest hole in the toolchain for a STEM book; needs an actual parser (MathJax/KaTeX parse-only API + `docinfo/macros`), not a rule | **Tool** (math checker) |
+| 6 | **LaTeX inside `<m>`/`<md>` is unchecked end to end** [feedback-loop §9.1] | The largest hole in the toolchain for a STEM (science, technology, engineering and mathematics) book; needs an actual parser (MathJax/KaTeX parse-only API + `docinfo/macros`), not a rule | **Tool** (math checker) |
 | 7 | **`publication.ptx` is never validated by the CLI** [feedback-loop §2 signal 7, §9.3] | A typo'd publisher switch is indistinguishable from one that works; the schema exists but is unwired (and needs its `epub/cover` false positive suppressed) | **Script** (jing over `publication-schema.rng`) |
 | 8 | **Referenced files are never checked to exist; asset generation fails silently** [feedback-loop §9.4; gh-issues §3.1] | Post-build file-existence/size sweep; exit code 0 proves nothing | **Script**, run after every build |
 | 9 | **Exercise semantics** — no converter produces `<exercises>/<exercise>/<task>`, and scripting the `<ol>` transform produces mismatched tags [conversion §3.4, §5 finding 2] | Genuinely requires judgement over content; the single largest manual bill in any conversion | **Agent** (subagent per chapter, with a human-approved worked example first) |
 | 10 | **Rendered-output inspection** — serve, curl, playwright, scan for surviving backslashes [feedback-loop §8] | Multi-process lifecycle (`view --no-launch`, `--stop-server`) plus a vision/text pass | **Command** + tool, and an **agent** for the reading pass |
 | 11 | **Deploy: silent success, two cross-wireable methods, hangs on bad credentials** [support Q2; gh-issues Deploy cli#725/#493/#503] | Requires method detection, a wall-clock timeout, and post-hoc verification the CLI does not do | **Command** wrapping deploy with detect → stage → verify |
 | 12 | **Validate-on-save** — the loop only works if it actually runs after each edit [feedback-loop §10; prior-art pattern 1] | The model cannot guarantee it runs it; 0.6–1.0 s is fast enough for a save hook | **Hook** (Claude-only; must degrade to "the skill tells you to run it") |
-| 13 | **Review layer** — image descriptions matching intent, informative titles, `<preface>` misuse, notation consistency [review-criteria, LLM-judgeable tier] | Not mechanical, not in the toolchain at all; needs reading | **Agent** (review pass), distinct from the validate loop |
+| 13 | **Review layer** — image descriptions matching intent, informative titles, `<preface>` misuse, notation consistency [review-criteria, LLM (large language model)-judgeable tier] | Not mechanical, not in the toolchain at all; needs reading | **Agent** (review pass), distinct from the validate loop |
 | 14 | **"Where does this config attribute go?"** (project vs publication vs docinfo) — the single most repeated support question [support §Recurring Q1] | A lookup, answerable from the schema + Guide, needed constantly and mid-flow | **Skill** (this one genuinely is a skill) + possibly the schema-query script [feedback-loop §7] |
 
 Read together, stalls 1–2 say the newcomer flow **begins** with something a skill cannot do; 5–8

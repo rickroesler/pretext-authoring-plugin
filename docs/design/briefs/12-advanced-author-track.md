@@ -22,16 +22,16 @@ and which are out of reach?
   **exit 1**. "Any agent policy of 'iterate until validate is silent' must be scoped to messages in
   files the agent touched." ⇒ on an existing book, an unscoped loop is an instant trust failure.
 - **feedback-loop-inventory.md §2 signal 7 / §9.3** — `publication.ptx` is **never validated by the
-  CLI**; `levl="2"` and `<bogus-element/>` are silently ignored; jing + `publication-schema.rng`
+  CLI (command-line interface)**; `levl="2"` and `<bogus-element/>` are silently ignored; jing + `publication-schema.rng`
   catches them (with one false positive: shipped schema requires `epub/cover`).
 - **pretext-support-survey.md, Recurring Q1** — "where does this config attribute go" asked
   near-verbatim for `@provide-dark-mode`, `author.deprecations.all`, `author.tools`, braille,
-  favicons, custom XSL. And Q5 / "What a validating agent would have caught": Rob Beezer said schema
+  favicons, custom XSL (Extensible Stylesheet Language). And Q5 / "What a validating agent would have caught": Rob Beezer said schema
   validation would have caught the `<idx>`-in-`<title>` "TeX capacity exceeded" family.
 - **pretext-support-survey.md, "HTML tolerates structural choices LaTeX rejects"** — named by Beezer
   as a common misconception; discovered only after a failed print build.
 - **github-issues-survey.md §2 split** — core-repo issues are dominated by cross-target rendering
-  correctness (HTML fine, PDF/EPUB/Runestone broken): images 73, pdf/LaTeX 69, html/css/MathJax 56.
+  correctness (HTML fine, PDF/EPUB (Electronic Publication)/Runestone broken): images 73, pdf/LaTeX 69, html/css/MathJax 56.
   §3.3: PDF/LaTeX failures are "the weakest error-attribution path" (cli#690/#806/#691/#812 open);
   always build with `-l/--latex`. §3.6: Runestone `activity`/`fillin`/timed exams silently misbehave
   even when validate and build are clean (pretext#2458, #2635, #2586/#2683).
@@ -51,7 +51,7 @@ and which are out of reach?
 |---|---|---|
 | **A. Knowledge-only** — deep references, no new tooling; rely on `pretext validate`. | Leaves publication.ptx unvalidated, diff-scoping unsolved, label stability unchecked; advanced authors hit the 196-message wall on run one. | Cheapest, fully portable, no maintenance of scripts. |
 | **B. Knowledge + three small tools:** diff-scoped validate report, `publication.ptx` jing check, schema context query. | Three scripts to maintain; publication-schema false positive (`epub/cover`) must be suppressed. | Fixes the three trust-critical gaps the CLI genuinely lacks; each is <60 lines. |
-| **C. B + a "safe-edit contract"**: never touch generated files, never restructure WW/Runestone-bearing activities, always preserve `@label`, always run `build tex`/`-l` before claiming PDF works. | Constrains the agent, may frustrate authors who *want* restructuring. | Directly answers "what would make them stop using it" — the failure modes are all silent damage to a working book. |
+| **C. B + a "safe-edit contract"**: never touch generated files, never restructure WW (WeBWorK)/Runestone-bearing activities, always preserve `@label`, always run `build tex`/`-l` before claiming PDF works. | Constrains the agent, may frustrate authors who *want* restructuring. | Directly answers "what would make them stop using it" — the failure modes are all silent damage to a working book. |
 | **D. C + cross-target proof tooling** (playwright render check, PDF page/box inspection). | Needs TeX + browsers; unavailable on most author machines (§8, §12). | Only route to the biggest core-repo pain category. |
 
 ## 4. Recommendation
@@ -86,7 +86,7 @@ yourself", rather than pretending to verify it. Option D moves to v0.2 behind a 
 9. Runestone-fragile constructs: maintained checklist, or defer to upstream? *Default: ship a short checklist (fillin `@mode`, activity placement, timed exams) with a recheck-after-upgrade note.*
 10. Deploy: drive `pretext deploy`, or advise only? *Default: advise + detect which of the two deploy methods the repo uses; never run a deploy that can hang on credentials without a timeout.*
 
-## 6. Hard-to-reverse → ADR candidates
+## 6. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
 - **ADR: diff-scoped checking contract** (what "clean" means on a pre-existing book) — every reviewer, hook and command inherits it.
 - **ADR: identifier-stability rule** (`@label`/`xml:id`/`document-id` are never rewritten by the agent) — a violation is unrecoverable for a hosted book.

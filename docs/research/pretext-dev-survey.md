@@ -11,7 +11,7 @@ also recency-biased), plus direct fetches of individual thread URLs. `WebFetch`
 summarizes fetched HTML with a small model rather than returning raw text, so quotes
 below were re-fetched with an explicit "verbatim, no paraphrase" instruction and
 cross-checked for consistency across two independent fetches before being reported as
-exact. Browser tools (chrome-devtools MCP) were available as a fallback for scrolling
+exact. Browser tools (chrome-devtools MCP (Model Context Protocol)) were available as a fallback for scrolling
 older results but were not needed for the search-term approach; the playwright MCP was
 not tried (flagged as possibly broken).
 
@@ -29,7 +29,7 @@ not tried (flagged as possibly broken).
   labeled accordingly.
 - No message IDs/permalinks were captured (WebFetch summarized rather than returned
   hrefs), so citations below are by thread title + author + date, matching what's
-  visible in the group UI.
+  visible in the group UI (User Interface).
 - The local `vendor-pretext` clone is a **shallow clone (depth 1)**: `git log` shows
   exactly one commit (`929e25b`, dated 2026-08-27), so `git log --since=... -- schema/`
   is **useless for churn analysis** (returns 1, trivially the single commit present).
@@ -124,10 +124,10 @@ names as high-churn and flag it to the author.
   2026) — Bradley Miller: "That's how Claude knows what it knows. I have been very
   careful, more careful than elsewhere, to be sure the publisher switches are
   documented." Signal that maintainers actively write documentation *with* the
-  expectation that LLMs will consume it — supports designing the plugin's reference
+  expectation that LLMs (large language models) will consume it — supports designing the plugin's reference
   material to lean on the Guide's publisher-switch docs rather than re-deriving them.
 - General pattern across many 2026 threads (see AI/LLM section below): maintainers are
-  already using Claude for day-to-day PreTeXt development work (schema design, XSL,
+  already using Claude for day-to-day PreTeXt development work (schema design, XSL (Extensible Stylesheet Language),
   numbering, docs, conversions) — the plugin isn't introducing AI to this community,
   it's formalizing a practice already underway.
 
@@ -214,7 +214,7 @@ it as "the list to check before every release," not a historical record.
 | Accessibility, braille/tactile graphics, image descriptions, PreFigure captions | **David Austin** |
 | CSS/theming, interactives, ordered-list markers, consolidation of stylesheets | **Andrew Scholer** |
 | HTML output bugs (dark mode, tabular-in-figure/margin, permalinks), schema/label identifiers | **Jeremy Sylvestre** / **Sean Fitzpatrick** (both recur across HTML/CSS bug threads) |
-| LMS embedding / link behavior | **Mitch Keller** |
+| LMS (learning management system) embedding / link behavior | **Mitch Keller** |
 | MyOpenMath / STACK integration | **Mark Fitch** (MyOpenMath), **Michael Obiero** / **Georg Osang** (STACK) |
 | WeBWorK build/tooling issues | **Alex Jordan**, cross-posts with **Rob Beezer** |
 
@@ -238,7 +238,7 @@ it as "the list to check before every release," not a historical record.
   quote the map's "Not yet specified → Contribution path for Rob's accumulated Claude
   rules/hints" item refers to; it establishes that Rob has an *informal, personal*
   collection, not a published one — the plugin design needs to invent the mechanism
-  for him to contribute it (a PR template, an issue, a direct file drop into a
+  for him to contribute it (a PR (pull request) template, an issue, a direct file drop into a
   `references/` directory, etc.), not just ask for a link.
 
 - Rob Beezer (following message, ~12:02 AM): "Don't forget the schema and all of the

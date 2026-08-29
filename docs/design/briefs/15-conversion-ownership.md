@@ -5,13 +5,13 @@ Ticket: [#15](https://github.com/rickroesler/pretext-authoring-plugin/issues/15)
 ## 1. The question
 
 How much manuscript conversion does the plugin own? (a) drive a converter and repair its output;
-(b) LLM-native conversion chapter-by-chapter validated by `pretext validate`; (c) a hybrid where a
+(b) LLM (large language model)-native conversion chapter-by-chapter validated by `pretext validate`; (c) a hybrid where a
 converter runs first and the LLM fixes what it drops. For which input formats does each apply, and
 what fidelity does a newcomer get? The answer defines `/pretext:convert` — or rules it out of v0.1.
 
 ## 2. Evidence
 
-- **conversion-landscape.md §0** — `pretext import` was **removed** from the CLI on 2026-08-24
+- **conversion-landscape.md §0** — `pretext import` was **removed** from the CLI (command-line interface) on 2026-08-24
   ("an experimental feature that never reached a stable enough state to be useful"); its replacement
   `@pretextbook/import` (npm, v0.9.0, 2026-08-22) is "not a CLI command — it is a library behind the
   VS Code extension … and the pretext.plus web app."
@@ -35,10 +35,10 @@ what fidelity does a newcomer get? The answer defines `/pretext:convert` — or 
   bill, and it needs judgement — my attempt to script the `<ol>`→`<exercises>` transform produced
   mismatched tags because nested parts must become `<task>`." (Reinforced by CLI 2.51.0 deprecating
   ordered-lists-as-exercise-parts.)
-- **conversion-landscape.md §6 table** — Word/.docx/RTF/HTML: **pandoc-pretext only**
+- **conversion-landscape.md §6 table** — Word/.docx/RTF (Rich Text Format)/HTML: **pandoc-pretext only**
   (`@pretextbook/import` does not accept `.docx`). Jupyter: nothing maintained (`jpconvert` abandoned
   2019). MyST: no bridge. PDF/handwritten: LLM directly, "which is what the community already does".
-- **conversion-landscape.md §2.2 (the Guide)** — Farmer/UTMOST is the only route the Guide endorses,
+- **conversion-landscape.md §2.2 (the Guide)** — Farmer/UTMOST (Undergraduate Teaching in Mathematics with Open Software and Textbooks) is the only route the Guide endorses,
   "95 percent correct … 20 times less effort"; and the Guide's stated prerequisite: be able to build
   the sample article and book *before* converting. Also §2.2: "LaTeX allows authors enough freedom
   that it is impossible to accurately discern intent in a totally automated way."
@@ -96,7 +96,7 @@ and `\autoref` in the unknown-macro table.
 9. What do we promise a newcomer about fidelity? *Default: publish the measured numbers (29/232 on clean LaTeX) rather than an adjective, and state that exercises are hand-authored.*
 10. Does conversion enforce the Guide's prerequisite (build the sample book first)? *Default: soft — offer `pretext new` + first build before converting, don't block.*
 
-## 6. Hard-to-reverse → ADR candidates
+## 6. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
 - **ADR: the plugin does not implement a converter** (no LaTeX parser; delegate to `@pretextbook/import`/pandoc and own the repair loop). Reversing means owning a parser forever.
 - **ADR: external-toolchain dependency policy** (may the plugin require Node/npm, and what degrades when it is missing) — affects the doctor, packaging, and the Codex portability story.

@@ -3,7 +3,7 @@
 Research ticket [#6](https://github.com/rickroesler/pretext-authoring-plugin/issues/6) (wayfinder map [#1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)).
 Snapshot date: 2026-08-28.
 
-Sources: the installed PreTeXt CLI (`.venv/`, 2.51.0), a purpose-installed 2.49.1 and a
+Sources: the installed PreTeXt CLI (command-line interface) (`.venv/`, 2.51.0), a purpose-installed 2.49.1 and a
 purpose-installed `@pretextbook/import` 0.9.0 in `scratch/convert-trial/`; the
 `PreTeXtBook/pretext-cli` CHANGELOG and commit history via the GitHub API; the PreTeXt Guide
 source in `vendor-pretext/doc/guide/`; the RELAX-NG schema at `~/.ptx/2.51.0/core/schema/`;
@@ -26,7 +26,7 @@ about PreTeXt conversion:
 2. **A TypeScript replacement is live and much better**: `@pretextbook/import` (npm, v0.9.0,
    2026-08-22) over `@unified-latex/unified-latex-to-pretext`. It is not a CLI command — it is a
    library behind the VS Code extension's *Import Project* command and the pretext.plus web app.
-3. **The community has already moved to LLM-assisted conversion.** On pretext-support in
+3. **The community has already moved to LLM (large language model)-assisted conversion.** On pretext-support in
    March–April 2026, faculty recommend Gemini section-by-section; Rob Beezer says he uses Claude
    Code for PreTeXt development and that AI runs on clean LaTeX "approached the quality of
    [Farmer's] tool".
@@ -47,8 +47,8 @@ marked for a human.
 | Route | Inputs | Math | Figures | Tables | Exercises | Cross-refs | Theorem envs | Maintenance | How you run it |
 |---|---|---|---|---|---|---|---|---|---|
 | **`@pretextbook/import`** (unified-latex, TS) | `.tex`, `.md`, `.ptx`, `.zip`, `.tar.gz`, pasted text | **good** (`<md number="yes">`, modern elements) | **partial** (child order wrong, `width="0.5\textwidth"`) | **good** (`<title>` misplaced only) | **lost as semantics** (`<ol>`, no `<exercises>`); `exam` class supported upstream | `\ref`/`\label` **good**; `\autoref` **flagged** as `<TODO>` | **good** | active (Levin/Siefken; releases through 2026-08) | npm library; VS Code *Import Project*; pretext.plus |
-| **pandoc-pretext** (`pretext.lua`) | anything pandoc reads: Markdown, LaTeX, **docx**, HTML, RTF, JATS | good; `\intertext` broken, `\text{}` in body text dropped | good (alt → `<shortdescription>`); empty figures on RTF | good (full `<col>` model, colspan) | none (README "future work") | `\label` → `xml:id` | good, with the bundled custom LaTeX reader | active (Levin; rewritten 2026-07-15 for pandoc 3.0 writer API) | `pandoc in.md -t pretext.lua -o out.ptx` |
-| **SL3X / UTMOST service** (David Farmer) | whole LaTeX repo | strong | strong | strong | hand-tuned | strong | strong | Farmer; repo public but README says "Not yet ready to be used" | email `farmer@aimath.org`; free for open licences |
+| **pandoc-pretext** (`pretext.lua`) | anything pandoc reads: Markdown, LaTeX, **docx**, HTML, RTF (Rich Text Format), JATS (Journal Article Tag Suite) | good; `\intertext` broken, `\text{}` in body text dropped | good (alt → `<shortdescription>`); empty figures on RTF | good (full `<col>` model, colspan) | none (README "future work") | `\label` → `xml:id` | good, with the bundled custom LaTeX reader | active (Levin; rewritten 2026-07-15 for pandoc 3.0 writer API) | `pandoc in.md -t pretext.lua -o out.ptx` |
+| **SL3X / UTMOST (Undergraduate Teaching in Mathematics with Open Software and Textbooks) service** (David Farmer) | whole LaTeX repo | strong | strong | strong | hand-tuned | strong | strong | Farmer; repo public but README says "Not yet ready to be used" | email `farmer@aimath.org`; free for open licences |
 | **`pretext import`** (plasTeX) | single/modular `.tex` | inline good; `\[…\]` good; `equation` **broken** | **broken** (non-parsing `@width`) | **partial** | **lost** | `\ref`/`\eqref` partial; `\autoref` **lost** | good only when `\newtheorem` name is a PreTeXt element | **removed 2026-08-24** | `pip install pretext==2.49.1` |
 | **LLM-assisted** (Gemini / Claude, current community practice) | anything, incl. PDFs and handwriting | reported good; Prefigure diagram generation praised | — | — | — | — | — | ad hoc, no shared prompts | copy-paste, section by section |
 
@@ -65,7 +65,7 @@ It drove [plasTeX](https://plastex.github.io/plastex/) (upstream PyPI `plastex>=
 [`6798022` "LaTeX to PreTeXt importer (#719)"](https://github.com/PreTeXtBook/pretext-cli/commit/67980228),
 2024-05-01, by Oscar Levin. Improved once ([#732](https://github.com/PreTeXtBook/pretext-cli/issues/732),
 modular-file support, image generation disabled), then untouched for two years. Removed in
-[`20fefe3` (PR #1219)](https://github.com/PreTeXtBook/pretext-cli/commit/20fefe36), 2026-08-24;
+[`20fefe3` (PR (pull request) #1219)](https://github.com/PreTeXtBook/pretext-cli/commit/20fefe36), 2026-08-24;
 the 2.50.0 pip package already has no `pretext/plastex/` directory and no `import` subcommand,
 so **2.49.1 is the last version that has it**.
 
@@ -119,7 +119,7 @@ And it closes the door on dual-sourcing:
 > their textbook. It is not feasible to maintain LaTeX source and expect to have all of the
 > features of PreTeXt.
 
-The author FAQ (`doc/guide/author/author-faq.xml`) is blunter about automation:
+The author FAQ (Frequently Asked Questions) (`doc/guide/author/author-faq.xml`) is blunter about automation:
 
 > There have been many attempts to convert TeX/LaTeX to more modern document formats. They are
 > not hard to find — none is satisfactory. We know because we have spent many years trying to
@@ -154,7 +154,7 @@ This is what replaced `pretext import`, and it is where the effort now goes.
   Created 2024-05 by Jason Siefken; **Oscar Levin is now the main contributor** — PR #156 (merged
   2026-08-18) adds the `exam` class (questions/parts/choices/solutions), top-level divisions for
   article/book/slideshow, Beamer + `tikzpicture`, the full `align`/`equation`/`gather`/`multline`/
-  `alignat` set, `thebibliography`/`\bibitem` plus BibTeX/CSL, and `<bibinfo>`. Modules confirm
+  `alignat` set, `thebibliography`/`\bibitem` plus BibTeX/CSL (Citation Style Language), and `<bibinfo>`. Modules confirm
   scope: `create-table-from-tabular.ts`, `exam-subs.ts`, `biblio-csl.ts`, `break-on-boundaries.ts`,
   `expand-user-defined-macros.ts`, `katex-subs.ts` + `katex-support.json` (reports macros
   MathJax/KaTeX won't support), `dropped-subs.ts`.
@@ -170,7 +170,7 @@ This is what replaced `pretext import`, and it is where the effort now goes.
 - **Cleaning** is a TypeScript port of [davidfarmer/PreprocessLaTeX](https://github.com/davidfarmer/PreprocessLaTeX)
   (Farmer's JS preprocessor, last commit 2026-04-27): drop comments, normalize whitespace, expand
   includes, rewrite plain-TeX font directives, scrub presentation macros. Every mutation is
-  reported as a structured `CleaningWarning` for a review UI — see the three warnings in §4.1.
+  reported as a structured `CleaningWarning` for a review UI (User Interface) — see the three warnings in §4.1.
 - **Its own SPEC §7 "Known limitations"**: image references are **not rewritten** (`<image source>`
   still points at original paths); asset basenames flattened so same-named images in different
   directories "collide silently"; "Only the **first author** is imported; `\and` co-authors are
@@ -186,7 +186,7 @@ This is what replaced `pretext import`, and it is where the effort now goes.
 ### 2.4 Pandoc — `oscarlevin/pandoc-pretext`
 
 Pandoc has no native PreTeXt writer.
-[oscarlevin/pandoc-pretext](https://github.com/oscarlevin/pandoc-pretext) (GPL-2.0, 17 stars,
+[oscarlevin/pandoc-pretext](https://github.com/oscarlevin/pandoc-pretext) (GPL (GNU General Public License)-2.0, 17 stars,
 created 2019, **rewritten 2026-07-14/15** for the pandoc ≥3.0 custom-writer API) is the only
 serious one, and its README positions it as the prototype for a case to make PreTeXt an official
 pandoc format. Three files: `pretext.lua` (32 KB writer), `pretext-environments.lua`
@@ -225,7 +225,7 @@ Announcement and testing feedback: pretext-dev
 ["New LaTeX (and more) to PreTeXt conversions: testing requests"](https://groups.google.com/g/pretext-dev/c/uTObEQIzCu8)
 (2026-07-15). Levin: *"converting pandoc's own manual from markdown to pretext results in a
 document with zero schema violations; previously there were hundreds."* Beezer tested a 120K
-CS-textbook chapter **from RTF** the next day: output validated clean, code and preformatted
+CS (computer science)-textbook chapter **from RTF** the next day: output validated clean, code and preformatted
 material converted accurately, but chapter titles nested wrongly inside `<introduction>`,
 paragraph content spuriously wrapped in `<term>`, code emitted line-by-line instead of as one
 block, and images poorly recognized (empty `<figure>`s). His verdict: *"a very good head-start
@@ -237,13 +237,13 @@ assessment above is documentary.
 ### 2.5 Markdown / MyST
 
 - **PreTeXt now has its own Markdown dialect.** `@pretextbook/remark-pretext` (v0.1.0,
-  2026-08-21) defines *markdown-style PreTeXt* = CommonMark + GFM +
+  2026-08-21) defines *markdown-style PreTeXt* = CommonMark + GFM (GitHub Flavored Markdown) +
   [remark-directive](https://github.com/remarkjs/remark-directive), e.g.
   `::::theorem[Pythagorean Theorem]{#thm-pythagoras}` containing `:::proof`, plus a Python-style
   `Name:`+indent dialect. `@pretextbook/markdown-style-pretext` supplies LSP completions and lint
   for it in VS Code and the pretext.plus Monaco editor. Inline text directives `:name[…]` are
   **not implemented** — they become `<TODO>` placeholders.
-- The reverse direction exists too: `@pretextbook/ptxast-util-to-mdast` (PreTeXt AST → mdast).
+- The reverse direction exists too: `@pretextbook/ptxast-util-to-mdast` (PreTeXt AST (Abstract Syntax Tree) → mdast).
 - **MyST-MD / Jupyter Book: no bridge found.** Searched GitHub and the web; nothing connects
   MyST or jupyter-book to PreTeXt. Treat as *probable but not exhaustively verified* — Google
   Groups is not full-text searchable with the tools available here.
@@ -257,7 +257,7 @@ No official workflow exists. What is actually available:
 - **pandoc-pretext directly**: `pandoc file.docx -t pretext.lua -o out.ptx`. Levin's original
   2019 pitch was exactly this — *"Pandoc can read word files (among many others), even with math
   in them."* The repo ships `examples/testdoc.docx` → `examples/testdoc.ptx`. Fidelity inherits
-  pandoc's docx reader: math (OMML → TeX) and heading structure survive; **theorem semantics
+  pandoc's docx reader: math (OMML (Office Math Markup Language) → TeX) and heading structure survive; **theorem semantics
   cannot**, because Word has none — everything lands as headings and paragraphs unless the author
   fenced it first.
 - **docx → LaTeX → `pretext import`** is possible in principle and documented nowhere; the
@@ -299,7 +299,7 @@ This is the most decision-relevant finding for the plugin, because it is already
   the Gemini approach, said he uses **Claude Code** for PreTeXt development, and asked for
   prompt-engineering details.
 - pretext-dev, ["LaTeX to PreTeXt"](https://groups.google.com/g/pretext-dev/c/cf-dhCnUDlM)
-  (2026-01-20). Daniel Hodgins proposed a Python GUI wrapper because Farmer's route needs email
+  (2026-01-20). Daniel Hodgins proposed a Python GUI (Graphical User Interface) wrapper because Farmer's route needs email
   and pandoc needs setup "that may intimidate non-technical users". Farmer: start with vanilla
   LaTeX; most packages are formatting, not semantics. **Beezer**: he is running AI experiments
   from PDF and LaTeX (motivated partly by braille transcription); results range from
@@ -356,7 +356,7 @@ display math → `<me>`; per-section file split with `xi:include` wiring.
    `<xi:include href="./docinfo.ptx" />`; no such file is produced, so `pretext validate` fails
    before any schema check runs.
 2. **LaTeX labels become illegal `xml:id`s.** `\label{sec:limits}` → `xml:id="sec:limits"`, and
-   `xml:id` must be an NCName: `error: xml:id : attribute value sec:limits is not an NCName`.
+   `xml:id` must be an NCName (XML non-colonized name): `error: xml:id : attribute value sec:limits is not an NCName`.
    Every `\label` using a `prefix:name` convention — i.e. essentially every real manuscript.
 3. **Numbered display math is textually corrupted.**
 

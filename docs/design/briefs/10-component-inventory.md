@@ -4,7 +4,7 @@ Ticket: [#10](https://github.com/rickroesler/pretext-authoring-plugin/issues/10)
 
 ## 1. The question
 
-Which components does the plugin contain (skills, commands, agents, hooks, tools/MCP, templates,
+Which components does the plugin contain (skills, commands, agents, hooks, tools/MCP (Model Context Protocol), templates,
 packs), which make v0.1, and — for each — what author pain it answers, which persona it serves, and
 whether it is portable-skill content or a Claude-Code-only extra? Plus: are any Claude-only features
 allowed to be load-bearing (map's default: none)?
@@ -12,7 +12,7 @@ allowed to be load-bearing (map's default: none)?
 ## 2. Evidence
 
 - **feedback-loop-inventory.md §0, §10** — `pretext validate <target> --report-form terse` is the gate
-  (file/XPath/line/check per line, exit 0/1/2, 0.9–1.0 s jing, 1.8 s on a 10 320-line book);
+  (file/XPath (XML Path Language)/line/check per line, exit 0/1/2, 0.9–1.0 s jing, 1.8 s on a 10 320-line book);
   `pretext build` "exits **0** on schema-invalid source, on unknown elements, on missing image files
   and on broken LaTeX" (§4.2) and ships an invented element's text into the HTML (§5). ⇒ a
   validate→build repair loop is the core component, and it must never gate on build alone.
@@ -21,7 +21,7 @@ allowed to be load-bearing (map's default: none)?
 - **pretext-support-survey.md, Category table + Recurring questions #1** — 284 threads; images ~44,
   markup/schema ~34, exercises/WeBWorK ~33, HTML-CSS ~28, build errors ~25, install ~14. Q1 ("where
   does this config attribute go?") is asked "nearly verbatim" for dark mode, `author.deprecations.all`,
-  `author.tools`, braille, favicons, custom XSL. ⇒ config-placement lookup skill.
+  `author.tools`, braille, favicons, custom XSL (Extensible Stylesheet Language). ⇒ config-placement lookup skill.
 - **pretext-support-survey.md, Recurring questions #4, #7 and "What a validating agent would have
   caught"** — pipx venv isolation, Windows lxml/cp1252/permissions cluster: "none of these are markup
   mistakes; they're environment mismatches an agent with a 'known Windows issues' checklist … could
@@ -31,7 +31,7 @@ allowed to be load-bearing (map's default: none)?
   "the build reports success but the expected image/asset is missing" ⇒ post-build artifact check.
 - **review-criteria.md, Summary** — ~50 criteria in three tiers; the mechanical tier is *already
   implemented* in `pretext-validation-plus.xsl` and "reusable as a standalone XPath/script"
-  (A1, A14, A15, A16, C11, C12, C18); a large LLM-judgeable tier (A4, C10, P3, P13) remains.
+  (A1, A14, A15, A16, C11, C12, C18); a large LLM (large language model)-judgeable tier (A4, C10, P3, P13) remains.
 - **prior-art.md, Patterns 1–7 / Anti-patterns** — validate-fix loop with a fix-naming validator
   (anthropics docx/pptx, 172k★); task-router SKILL.md + one reference per feature area
   (quarto-authoring, 485★); build-as-hard-gate (TinyUSB `sphinx-build -W`); template-first;
@@ -51,7 +51,7 @@ allowed to be load-bearing (map's default: none)?
 |---|---|---|
 | **A. Thin core:** one `pretext` skill + validate/build loop script + doctor. | Leaves the top three pain categories (images, exercises, config placement) to raw model knowledge; risks the 1★ "thin skill" failure mode. | Smallest surface, ships fastest, trivially portable. |
 | **B. Router core + reference set + 3 scripts (doctor, validate-loop, schema-query) + templates; math pack; commands as thin wrappers; no hooks/MCP.** | ~10 reference files and 3 scripts to write and keep current; two-persona routing to design. | Matches every prior-art winner; covers the four highest-count pain categories; 100 % portable core with Claude-only sugar on top. |
-| **C. B + reviewer agents (lint + LLM reviewers) + save hook + schema MCP server.** | Agents/hooks/MCP are Claude-only and would be load-bearing; MCP duplicates a 52-line script that runs in 0.03 s; hook noise on a book with 196 pre-existing messages. | Best in-Claude UX; automatic validation on save. |
+| **C. B + reviewer agents (lint + LLM reviewers) + save hook + schema MCP server.** | Agents/hooks/MCP are Claude-only and would be load-bearing; MCP duplicates a 52-line script that runs in 0.03 s; hook noise on a book with 196 pre-existing messages. | Best in-Claude UX (User Experience); automatic validation on save. |
 | **D. B + lint reviewer only (validation-plus lifted as a script), reviewers deferred.** | One extra script; overlaps `pretext validate` output. | Gives a per-file/per-diff filter the CLI lacks (§9.11) without Claude-only dependencies. |
 
 ## 4. Recommendation
@@ -98,14 +98,14 @@ Portability: **P**=portable skill content, **CC**=Claude-Code-only.
 2. Does the doctor ship as a script or as prose in a reference? *Default: script — it must produce a verdict, not advice.*
 3. jing, salve or server as the recommended default engine? *Default: jing if present (its "expected element" list is the best repair hint), salve as no-Java fallback, server last (16 s + uploads source).*
 4. Does the loop stop at `validate` clean, or require `build` clean too? *Default: both — `@width` proves validate-clean ≠ build-clean.*
-5. Is the lint reviewer a script that re-runs `validation-plus`, or a post-filter over the terse report? *Default: post-filter (free, no XSLT/entity path problems).*
+5. Is the lint reviewer a script that re-runs `validation-plus`, or a post-filter over the terse report? *Default: post-filter (free, no XSLT (Extensible Stylesheet Language Transformations)/entity path problems).*
 6. Are slash commands allowed to contain any logic? *Default: no — pure wrappers, so Codex loses nothing.*
 7. Namespace: `pretext:` or `ptx:`? *Default: `pretext:` (matches the CLI and survives the org handoff).*
 8. Does v0.1 include conversion at all? *Default: yes, as the thin shim only (see brief #15).*
 9. Post-build artifact verification: in v0.1 or v0.2? *Default: v0.1, minimal (count + non-zero size).*
 10. Any Claude-only feature load-bearing? *Default: none.*
 
-## 7. Hard-to-reverse → ADR candidates
+## 7. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
 - **ADR: portability constraint** — portable Agent Skills core, Claude-only features never load-bearing, SKILL.md under Codex's 8 KB cap. Reverses badly once references and commands are written against it.
 - **ADR: skill split / core+pack boundary** — renaming or resplitting skills breaks user invocations and pack layout.

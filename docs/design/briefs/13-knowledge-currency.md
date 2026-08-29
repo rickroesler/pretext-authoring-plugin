@@ -4,7 +4,7 @@ Ticket: [#13](https://github.com/rickroesler/pretext-authoring-plugin/issues/13)
 
 ## 1. The question
 
-PreTeXt's schema and CLI change continuously. How does the plugin stay correct: vendor a pinned
+PreTeXt's schema and CLI (command-line interface) change continuously. How does the plugin stay correct: vendor a pinned
 snapshot and regenerate references from it; fetch live at use time; read the *installed* `pretext`
 and its bundled schema; or have upstream host the skill? What does each cost in tokens, latency,
 staleness and maintenance, and which fits the PreTeXtBook-org handoff?
@@ -37,7 +37,7 @@ staleness and maintenance, and which fits the PreTeXtBook-org handoff?
   content should be periodically rebuilt/verified against the vendored `pretext` version".
 - **prior-art.md, Pattern 7** — `quarto-authoring` carries `metadata: {version: "1.4"}` plus "based on
   Quarto CLI v1.9.36" in the body: a versioned, pinned, maintained artifact.
-- **licensing.md §3** — Guide prose is GFDL; schema and examples are GPL; both must live in their own
+- **licensing.md §3** — Guide prose is GFDL (GNU Free Documentation License); schema and examples are GPL (GNU General Public License); both must live in their own
   quarantined subdirectories with headers intact. ⇒ *regenerating* references from the schema is also
   the licence-cleanest route (facts, not paraphrase — §2(a)).
 - **pretext-dev-survey.md (f)** — Rob Beezer: "Don't forget the schema and all of the example
@@ -88,7 +88,7 @@ version in metadata, is exactly what makes it cheap for Rob's team to adopt a re
 9. Do references quote the Guide at all? *Default: no direct quotation; facts restated. Any file that does track Guide wording goes in `references/guide-derived/` under GFDL.*
 10. Do we pin to a CLI version *range* or a point version? *Default: point version pinned, range documented as "verified 2.5x".*
 
-## 6. Hard-to-reverse → ADR candidates
+## 6. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
 - **ADR: runtime-resolved schema knowledge vs. vendored snapshot.** Decides whether the plugin ships GPL material at all, and every schema-touching component's contract. Reversing means rewriting references and the licensing NOTICE.
 - **ADR: integration surface = the `pretext` CLI contract only** (`validate` exit codes + `--report-form terse`), never `pretext.py` internals. Validation internals are mid-refactor; coupling now would be expensive to undo.
