@@ -1,6 +1,6 @@
 # Brief 13 — Knowledge-currency strategy: how the plugin tracks PreTeXt changes
 
-Ticket: [#13](https://github.com/rickroesler/pretext-authoring/issues/13). Status: **for grilling, not decided.**
+Ticket: [#13](https://github.com/rickroesler/pretext-authoring-plugin/issues/13). Status: **for grilling, not decided.**
 
 ## 1. The question
 

@@ -1,7 +1,7 @@
 # Prior art: agent skills/plugins for document-authoring systems
 
-Research ticket [#5](https://github.com/rickroesler/pretext-authoring/issues/5), feeding
-[Map #1](https://github.com/rickroesler/pretext-authoring/issues/1).
+Research ticket [#5](https://github.com/rickroesler/pretext-authoring-plugin/issues/5), feeding
+[Map #1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1).
 
 ## Comparison table
 

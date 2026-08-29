@@ -1,6 +1,6 @@
 # Brief 12 — What the advanced-author track must get right
 
-Ticket: [#12](https://github.com/rickroesler/pretext-authoring/issues/12). Status: **for grilling, not decided.**
+Ticket: [#12](https://github.com/rickroesler/pretext-authoring-plugin/issues/12). Status: **for grilling, not decided.**
 
 ## 1. The question
 

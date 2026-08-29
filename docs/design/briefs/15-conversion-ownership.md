@@ -1,6 +1,6 @@
 # Brief 15 — Conversion ownership: what the plugin does itself versus delegates
 
-Ticket: [#15](https://github.com/rickroesler/pretext-authoring/issues/15). Status: **for grilling, not decided.**
+Ticket: [#15](https://github.com/rickroesler/pretext-authoring-plugin/issues/15). Status: **for grilling, not decided.**
 
 ## 1. The question
 

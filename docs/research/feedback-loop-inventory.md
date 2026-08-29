@@ -1,7 +1,7 @@
 # Feedback-loop inventory: what tells an agent its PreTeXt is right
 
-Research ticket [#7](https://github.com/rickroesler/pretext-authoring/issues/7) (wayfinder map
-[#1](https://github.com/rickroesler/pretext-authoring/issues/1)).
+Research ticket [#7](https://github.com/rickroesler/pretext-authoring-plugin/issues/7) (wayfinder map
+[#1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)).
 Snapshot date: 2026-08-28. PreTeXt CLI 2.51.0 in `.venv/`, core at `~/.ptx/2.51.0/core/`,
 `vendor-pretext/` at the same vintage.
 

@@ -15,7 +15,7 @@ Building the plugin is a separate effort. This repo is the design phase.
 ## Status
 
 The design is being charted as a wayfinder map on this repo's GitHub Issues:
-[Map: a validated design for a PreTeXt authoring plugin](https://github.com/rickroesler/pretext-authoring/issues/1)
+[Map: a validated design for a PreTeXt authoring plugin](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)
 (issue #1). Research tickets #2–#9 are done (author pain surveys, the feedback-loop
 inventory, conversion landscape, prior art, licensing, review criteria). Design-decision
 tickets #10–#19 are open — component inventory, math pack scope, advanced-author track,

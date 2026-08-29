@@ -1,6 +1,6 @@
 # Licensing: what the plugin may embed, and what it should carry itself
 
-Research ticket: [#8](https://github.com/rickroesler/pretext-authoring/issues/8) (wayfinder map [#1](https://github.com/rickroesler/pretext-authoring/issues/1)).
+Research ticket: [#8](https://github.com/rickroesler/pretext-authoring-plugin/issues/8) (wayfinder map [#1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)).
 
 Sources inspected directly in `vendor-pretext/` (shallow clone of `PreTeXtBook/pretext`, commit-current as of 2026-08-28) plus the GitHub API for `PreTeXtBook/pretext-cli` and the org's other repos. Everything under "Quotes" below is copied verbatim from those files; everything under "Interpretation" is my reasoning, not legal advice.
 

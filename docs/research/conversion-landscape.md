@@ -1,6 +1,6 @@
 # Manuscript conversion landscape: LaTeX / Markdown / Word → PreTeXt
 
-Research ticket [#6](https://github.com/rickroesler/pretext-authoring/issues/6) (wayfinder map [#1](https://github.com/rickroesler/pretext-authoring/issues/1)).
+Research ticket [#6](https://github.com/rickroesler/pretext-authoring-plugin/issues/6) (wayfinder map [#1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)).
 Snapshot date: 2026-08-28.
 
 Sources: the installed PreTeXt CLI (`.venv/`, 2.51.0), a purpose-installed 2.49.1 and a

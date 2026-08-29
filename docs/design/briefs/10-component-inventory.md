@@ -1,6 +1,6 @@
 # Brief 10 — Component inventory and the v0.1 cut line
 
-Ticket: [#10](https://github.com/rickroesler/pretext-authoring/issues/10). Status: **for grilling, not decided.**
+Ticket: [#10](https://github.com/rickroesler/pretext-authoring-plugin/issues/10). Status: **for grilling, not decided.**
 
 ## 1. The question
 

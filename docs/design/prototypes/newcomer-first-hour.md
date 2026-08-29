@@ -1,7 +1,7 @@
 # Prototype: the newcomer's first hour
 
-Prototype artifact for ticket [#11](https://github.com/rickroesler/pretext-authoring/issues/11)
-(wayfinder map [#1](https://github.com/rickroesler/pretext-authoring/issues/1)).
+Prototype artifact for ticket [#11](https://github.com/rickroesler/pretext-authoring-plugin/issues/11)
+(wayfinder map [#1](https://github.com/rickroesler/pretext-authoring-plugin/issues/1)).
 Status: **draft for human reaction** — nothing here is a decision.
 
 This is a *scripted storyboard*, not a spec and not a transcript of a real session. It imagines

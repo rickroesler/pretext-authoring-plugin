@@ -1,6 +1,6 @@
 # Brief 14 — The math pack: what is math-specific versus core
 
-Ticket: [#14](https://github.com/rickroesler/pretext-authoring/issues/14). Status: **for grilling, not decided.**
+Ticket: [#14](https://github.com/rickroesler/pretext-authoring-plugin/issues/14). Status: **for grilling, not decided.**
 
 ## 1. The question
 

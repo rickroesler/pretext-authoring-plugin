@@ -1,6 +1,6 @@
 # pretext-support survey: what problems do authors actually bring?
 
-**Research ticket:** [#2](https://github.com/rickroesler/pretext-authoring/issues/2)
+**Research ticket:** [#2](https://github.com/rickroesler/pretext-authoring-plugin/issues/2)
 **Date:** 2026-08-28
 **Source:** [pretext-support Google group](https://groups.google.com/g/pretext-support) (~1,876 threads total)
 
