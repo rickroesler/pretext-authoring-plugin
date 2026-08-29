@@ -49,6 +49,7 @@ in Claude Code as slash commands against this repo's GitHub Issues:
 | `docs/design/briefs/` | Decision briefs for the open design tickets. |
 | `docs/design/prototypes/` | Design prototypes, e.g. the newcomer-first-hour storyboard. |
 | `docs/agents/` | Conventions for how agent skills use this repo's issue tracker. |
+| `AGENTS.md` | Instructions for any coding agent working in this repo ([open convention](https://agents.md/)); `CLAUDE.md` just imports it. |
 
 ## Local toolchain (gitignored, not committed)
 

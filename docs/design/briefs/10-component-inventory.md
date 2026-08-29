@@ -136,6 +136,7 @@ Portability: **P**=portable skill content, **CC**=Claude-Code-only.
 | 20 | Formatter — shell out to `npx pretext-format --write/--check` rather than build one (updated after #21) | T | both | org-survey §2 ("don't build a competing formatter") | P (npx, needs Node) | **out** (v0.2 convenience wrapper) |
 | 18 | Deploy/Runestone troubleshooting reference | S | both | support-survey Q2 (deploy silently succeeds); gh cli#725/#503/#493 | P | **out** (v0.2) |
 | 19 | Rendered-output/visual check (curl + playwright, backslash scan for bad LaTeX) | T | advanced | feedback-loop §8, §9.1 (LaTeX in `<m>` unchecked end-to-end) | P (heavy deps) | **out** (v0.2) |
+| 21 | **`AGENTS.md` scaffold (added 2026-08-29)** — `/pretext:new` (and `doctor` on an existing project) writes an `AGENTS.md` if absent: "this is a PreTeXt project; source in `source/`; validate with `pretext validate <target>`; build with `pretext build`; never edit `generated/`/`output/`; targets are …", plus a two-line `CLAUDE.md` containing `@AGENTS.md`. Claude Code does not read `AGENTS.md` natively (docs: "Claude Code reads CLAUDE.md, not AGENTS.md"), but Codex, Cursor, Gemini CLI, Copilot, Jules and ~12 others do, so a co-author on another agent gets the same orientation. Prompted by Charilaos Skiadas's pretext-dev comment (2026-08-29) asking for an `AGENTS.md` upstream. | TPL | both | portability principle; pretext-dev thread 0D90duVchZg (Skiadas) | P | **in** |
 
 ## 6. Grilling questions (one at a time, with defaults)
 
@@ -152,6 +153,10 @@ Portability: **P**=portable skill content, **CC**=Claude-Code-only.
 11. *(New, updated after #21)* Does the doctor check the Node 22 (CLI's Docker image) vs. Node 24+
     (`pretext-tools` live-preview) mismatch? *Default: yes — flag it, don't fail on it, since the
     plugin's own core doesn't need Node 24.*
+
+12. *(New, 2026-08-29)* Does the scaffolded `AGENTS.md` carry project-specific facts (targets, chapter
+    layout) or only the generic PreTeXt orientation? *Default: generic block + a short generated
+    "this project" section the author can edit; `doctor` never overwrites an existing file.*
 
 ## 7. Hard-to-reverse → ADR (Architecture Decision Record) candidates
 
