@@ -56,6 +56,6 @@ in Claude Code as slash commands against this repo's GitHub Issues:
 | Path | What |
 |---|---|
 | `.venv/` | PreTeXt CLI (command-line interface) 2.51.0 — recreate with `python -m venv .venv && .venv/bin/pip install pretext`. (`pretext[all]` additionally pulls in PreFigure, whose `pycairo` dependency needs `pkg-config` and `libcairo2-dev` installed system-wide.) |
-| `vendor-pretext/` | Shallow clone of `PreTeXtBook/pretext` — XSL (Extensible Stylesheet Language), schema, `examples/`, and the Guide's source. Superseded by full clones of `pretext` and `pretext-cli` kept as siblings of this repo (`../pretext`, `../pretext-cli`) for upstream contributions. |
+| `vendor-pretext/` | Symlink to `../pretext`, a full clone of `PreTeXtBook/pretext` (`master`) — XSL (Extensible Stylesheet Language), schema, `examples/`, and the Guide's source. Grep this when docs and behaviour disagree. `../pretext-cli` is the matching clone of the CLI. Both stay on their default branch; upstream contributions are made from git worktrees in separate sibling folders. |
 | `scratch/` | Throwaway projects used to verify claims in the docs against a real build. |
 | `reference-skill-draft/` | The earlier physics-flavoured PreTeXt skill (SKILL.md, references, templates). Kept locally as a reference for the design; the plugin's skills will be written fresh from the design. |
